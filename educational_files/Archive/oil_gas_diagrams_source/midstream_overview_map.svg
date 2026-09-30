@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="680" height="620" viewBox="0 0 680 620" xmlns="http://www.w3.org/2000/svg">
+<style>
+text{font-family:'IBM Plex Sans','Segoe UI',Arial,sans-serif}
+.th{font-size:13px;font-weight:600;fill:#1A1A18}
+.ts{font-size:11px;fill:#62615C}
+.node{stroke-width:.5}
+.arr{stroke:#5F5E5A;stroke-width:1;fill:none;opacity:.6}
+.leader{stroke:#5F5E5A;stroke-width:.5;opacity:.4}
+g.c-blue>rect,g.c-blue>circle,rect.c-blue,circle.c-blue{fill:#E6F1FB;stroke:#185FA5}
+g.c-blue>.th{fill:#0C447C} g.c-blue>.ts{fill:#185FA5}
+g.c-teal>rect,g.c-teal>circle,rect.c-teal,circle.c-teal{fill:#E1F5EE;stroke:#0F6E56}
+g.c-teal>.th{fill:#085041} g.c-teal>.ts{fill:#0F6E56}
+g.c-coral>rect,g.c-coral>circle,rect.c-coral,circle.c-coral{fill:#FAECE7;stroke:#D85A30}
+g.c-coral>.th{fill:#712B13} g.c-coral>.ts{fill:#993C1D}
+g.c-amber>rect,g.c-amber>circle,rect.c-amber,circle.c-amber{fill:#FAEEDA;stroke:#BA7517}
+g.c-amber>.th{fill:#633806} g.c-amber>.ts{fill:#854F0B}
+g.c-gray>rect,g.c-gray>circle,rect.c-gray,circle.c-gray{fill:#F1EFE8;stroke:#888780}
+g.c-gray>.th{fill:#2C2C2A} g.c-gray>.ts{fill:#5F5E5A}
+g.c-purple>rect,g.c-purple>circle,rect.c-purple,circle.c-purple{fill:#EEEDFB;stroke:#534AB7}
+g.c-purple>.th{fill:#3C3489} g.c-purple>.ts{fill:#534AB7}
+g.c-green>rect,g.c-green>circle,rect.c-green,circle.c-green{fill:#EDF5E5;stroke:#6a9a58}
+g.c-green>.th{fill:#27500A} g.c-green>.ts{fill:#3d6b2a}
+</style>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+<marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="#185FA5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+<marker id="arrow-amber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="#BA7517" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+<marker id="arrow-teal" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+
+<!-- UPSTREAM SOURCE (left) -->
+<g class="node c-amber" onclick="sendPrompt('How does crude oil and natural gas leave the wellhead and enter the midstream system?')">
+  <rect x="18" y="230" width="110" height="80" rx="8" stroke-width="0.5"/>
+  <text class="th" x="73" y="258" text-anchor="middle">Upstream</text>
+  <text class="ts" x="73" y="274" text-anchor="middle">Wellhead</text>
+  <text class="ts" x="73" y="290" text-anchor="middle">production</text>
+  <text class="ts" x="73" y="306" text-anchor="middle">crude · gas · NGLs</text>
+</g>
+
+<!-- Gathering arrow -->
+<line x1="128" y1="270" x2="166" y2="270" stroke="#BA7517" stroke-width="2" marker-end="url(#arrow-amber)"/>
+
+<!-- GATHERING & PROCESSING (center-left) -->
+<g class="node c-blue" onclick="sendPrompt('Explain gathering systems and gas processing plants — what happens between the wellhead and the pipeline?')">
+  <rect x="168" y="190" width="140" height="160" rx="8" stroke-width="0.5"/>
+  <text class="th" x="238" y="214" text-anchor="middle">Gathering &amp;</text>
+  <text class="th" x="238" y="230" text-anchor="middle">processing</text>
+  <text class="ts" x="185" y="252" font-size="10">• Gathering lines (small pipe)</text>
+  <text class="ts" x="185" y="268" font-size="10">• Compression stations</text>
+  <text class="ts" x="185" y="284" font-size="10">• Gas processing plant</text>
+  <text class="ts" x="185" y="300" font-size="10">• NGL extraction</text>
+  <text class="ts" x="185" y="316" font-size="10">• H₂S / CO₂ removal</text>
+  <text class="ts" x="185" y="332" font-size="10">• Dehydration</text>
+</g>
+
+<!-- Pipeline transport arrow (crude) -->
+<line x1="308" y1="248" x2="356" y2="248" stroke="#BA7517" stroke-width="2" marker-end="url(#arrow-amber)"/>
+<text class="ts" x="332" y="242" text-anchor="middle" fill="#854F0B" font-size="9">crude</text>
+
+<!-- Pipeline transport arrow (gas) -->
+<line x1="308" y1="300" x2="356" y2="300" stroke="#185FA5" stroke-width="2" marker-end="url(#arrow-blue)"/>
+<text class="ts" x="332" y="294" text-anchor="middle" fill="#185FA5" font-size="9">dry gas</text>
+
+<!-- NGL arrow down -->
+<line x1="238" y1="350" x2="238" y2="388" stroke="#1D9E75" stroke-width="2" marker-end="url(#arrow-teal)"/>
+<text class="ts" x="238" y="374" text-anchor="middle" fill="#1D9E75" font-size="9">NGLs</text>
+
+<!-- NGL fractionation -->
+<g class="node c-teal" onclick="sendPrompt('What is NGL fractionation — what are the NGL products and how are they separated?')">
+  <rect x="168" y="390" width="140" height="100" rx="8" stroke-width="0.5"/>
+  <text class="th" x="238" y="412" text-anchor="middle">NGL fractionation</text>
+  <text class="ts" x="185" y="432" font-size="10">Ethane · Propane · Butane</text>
+  <text class="ts" x="185" y="448" font-size="10">Isobutane · Natural gasoline</text>
+  <text class="ts" x="185" y="464" font-size="10">Separated by boiling point</text>
+  <text class="ts" x="185" y="480" font-size="10">Mont Belvieu, TX hub</text>
+</g>
+
+<!-- TRUNK PIPELINES (center) -->
+<g class="node c-blue" onclick="sendPrompt('Explain long-haul crude oil and natural gas trunk pipelines — how they work, key systems, tariffs')">
+  <rect x="358" y="190" width="140" height="160" rx="8" stroke-width="0.5"/>
+  <text class="th" x="428" y="214" text-anchor="middle">Trunk pipelines</text>
+  <text class="th" x="428" y="230" text-anchor="middle">&amp; storage</text>
+  <text class="ts" x="375" y="252" font-size="10">• Crude pipelines (16–48 in.)</text>
+  <text class="ts" x="375" y="268" font-size="10">• Gas transmission lines</text>
+  <text class="ts" x="375" y="284" font-size="10">• Pump / compressor stations</text>
+  <text class="ts" x="375" y="300" font-size="10">• Tank farms (crude storage)</text>
+  <text class="ts" x="375" y="316" font-size="10">• Salt cavern gas storage</text>
+  <text class="ts" x="375" y="332" font-size="10">• Cushing, OK hub</text>
+</g>
+
+<!-- Arrow to export / marine -->
+<line x1="498" y1="248" x2="546" y2="248" stroke="#BA7517" stroke-width="2" marker-end="url(#arrow-amber)"/>
+<text class="ts" x="522" y="242" text-anchor="middle" fill="#854F0B" font-size="9">crude</text>
+<line x1="498" y1="300" x2="546" y2="300" stroke="#185FA5" stroke-width="2" marker-end="url(#arrow-blue)"/>
+<text class="ts" x="522" y="294" text-anchor="middle" fill="#185FA5" font-size="9">gas</text>
+
+<!-- EXPORT TERMINALS / LNG (right) -->
+<g class="node c-coral" onclick="sendPrompt('Explain crude export terminals, marine loading, and LNG liquefaction facilities')">
+  <rect x="548" y="190" width="116" height="100" rx="8" stroke-width="0.5"/>
+  <text class="th" x="606" y="214" text-anchor="middle">Export &amp;</text>
+  <text class="th" x="606" y="230" text-anchor="middle">marine</text>
+  <text class="ts" x="566" y="252" font-size="10">Crude export terminals</text>
+  <text class="ts" x="566" y="268" font-size="10">LNG liquefaction plants</text>
+  <text class="ts" x="566" y="284" font-size="10">Marine loading docks</text>
+</g>
+
+<!-- Arrow to downstream -->
+<line x1="498" y1="340" x2="546" y2="370" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<!-- DOWNSTREAM DELIVERY (right-bottom) -->
+<g class="node c-gray" onclick="sendPrompt('How does crude oil reach refineries and how does gas reach power plants and utilities?')">
+  <rect x="548" y="310" width="116" height="100" rx="8" stroke-width="0.5"/>
+  <text class="th" x="606" y="334" text-anchor="middle">Downstream</text>
+  <text class="th" x="606" y="350" text-anchor="middle">delivery</text>
+  <text class="ts" x="566" y="370" font-size="10">Refineries</text>
+  <text class="ts" x="566" y="386" font-size="10">Power plants</text>
+  <text class="ts" x="566" y="402" font-size="10">LDCs / utilities</text>
+</g>
+
+<!-- TANKER SHIPPING (bottom arc) -->
+<g class="node c-purple" onclick="sendPrompt('Explain tanker shipping — VLCCs, Aframax, freight rates, Worldscale, the spot and charter markets')">
+  <rect x="358" y="420" width="306" height="70" rx="8" stroke-width="0.5"/>
+  <text class="th" x="511" y="444" text-anchor="middle">Tanker shipping &amp; marine</text>
+  <text class="ts" x="375" y="462" font-size="10">VLCC · Suezmax · Aframax · MR tanker · LNG carrier</text>
+  <text class="ts" x="375" y="478" font-size="10">Worldscale rates · time charter · spot charter · voyage charter</text>
+</g>
+
+<!-- Arrow from export to tankers -->
+<line x1="606" y1="290" x2="606" y2="418" stroke="#D85A30" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrow)"/>
+
+<!-- PRODUCTS PIPELINE (bottom) -->
+<g class="node c-green" onclick="sendPrompt('Explain refined products pipelines — how gasoline, diesel and jet fuel move from refinery to market')">
+  <rect x="168" y="510" width="306" height="70" rx="8" stroke-width="0.5"/>
+  <text class="th" x="321" y="534" text-anchor="middle">Refined products pipelines &amp; terminals</text>
+  <text class="ts" x="185" y="552" font-size="10">Gasoline · diesel · jet fuel moved by batching in shared pipelines</text>
+  <text class="ts" x="185" y="568" font-size="10">Colonial Pipeline (US East Coast) · Buckeye · Magellan · rack pricing</text>
+</g>
+
+<!-- Arrow from downstream to products pipeline -->
+<line x1="548" y1="380" x2="474" y2="508" stroke="#639922" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrow)"/>
+
+<!-- Title banner -->
+<rect x="18" y="12" width="644" height="36" rx="8" fill="#F4F2EC" stroke="#D3D1C7" stroke-width="0.5"/>
+<text class="th" x="340" y="28" text-anchor="middle" font-size="13">Midstream system — from wellhead to market</text>
+<text class="ts" x="340" y="42" text-anchor="middle">Five subsystems · fee-based economics · physical infrastructure connecting production to consumption</text>
+
+<!-- Legend -->
+<rect x="18" y="500" width="140" height="90" rx="6" fill="none" stroke="#D3D1C7" stroke-width="0.5" stroke-dasharray="4 3"/>
+<text class="ts" x="30" y="518" font-size="10" fill="#854F0B">— crude / liquids flow</text>
+<text class="ts" x="30" y="534" font-size="10" fill="#185FA5">— natural gas flow</text>
+<text class="ts" x="30" y="550" font-size="10" fill="#1D9E75">— NGL flow</text>
+<text class="ts" x="30" y="566" font-size="10" fill="#5F5E5A">- - refined products</text>
+<text class="ts" x="30" y="582" font-size="10" fill="#D85A30">- - marine / export</text>
+</svg>

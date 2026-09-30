@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="680" height="400" viewBox="0 0 680 400" role="img" xmlns="http://www.w3.org/2000/svg">
+<style>
+text{font-family:'IBM Plex Sans','Segoe UI',Arial,sans-serif}
+.th{font-size:13px;font-weight:600;fill:#1A1A18}
+.ts{font-size:11px;fill:#62615C}
+.node{stroke-width:.5}
+.arr{stroke:#5F5E5A;stroke-width:1;fill:none;opacity:.6}
+.leader{stroke:#5F5E5A;stroke-width:.5;opacity:.4}
+g.c-blue>rect,g.c-blue>circle,rect.c-blue,circle.c-blue{fill:#E6F1FB;stroke:#185FA5}
+g.c-blue>.th{fill:#0C447C} g.c-blue>.ts{fill:#185FA5}
+g.c-teal>rect,g.c-teal>circle,rect.c-teal,circle.c-teal{fill:#E1F5EE;stroke:#0F6E56}
+g.c-teal>.th{fill:#085041} g.c-teal>.ts{fill:#0F6E56}
+g.c-coral>rect,g.c-coral>circle,rect.c-coral,circle.c-coral{fill:#FAECE7;stroke:#D85A30}
+g.c-coral>.th{fill:#712B13} g.c-coral>.ts{fill:#993C1D}
+g.c-amber>rect,g.c-amber>circle,rect.c-amber,circle.c-amber{fill:#FAEEDA;stroke:#BA7517}
+g.c-amber>.th{fill:#633806} g.c-amber>.ts{fill:#854F0B}
+g.c-gray>rect,g.c-gray>circle,rect.c-gray,circle.c-gray{fill:#F1EFE8;stroke:#888780}
+g.c-gray>.th{fill:#2C2C2A} g.c-gray>.ts{fill:#5F5E5A}
+g.c-purple>rect,g.c-purple>circle,rect.c-purple,circle.c-purple{fill:#EEEDFB;stroke:#534AB7}
+g.c-purple>.th{fill:#3C3489} g.c-purple>.ts{fill:#534AB7}
+g.c-green>rect,g.c-green>circle,rect.c-green,circle.c-green{fill:#EDF5E5;stroke:#6a9a58}
+g.c-green>.th{fill:#27500A} g.c-green>.ts{fill:#3d6b2a}
+</style>
+<title>3-2-1 crack spread explained</title>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="th" x="340" y="28" text-anchor="middle" fill="#2C2C2A">The 3-2-1 crack spread — refinery gross margin</text>
+<text class="ts" x="340" y="46" text-anchor="middle" fill="#5F5E5A">3 barrels crude in → 2 barrels gasoline + 1 barrel diesel out</text>
+<text class="ts" x="130" y="78" text-anchor="middle" fill="#5F5E5A">INPUT (cost)</text>
+<g class="c-gray"><rect x="20" y="85" width="220" height="54" rx="8" stroke-width="0.5"/><text class="th" x="130" y="108" text-anchor="middle">3 × WTI crude</text><text class="ts" x="130" y="126" text-anchor="middle">3 × $91 = $273 / 3 bbl</text></g>
+<line x1="242" y1="112" x2="298" y2="112" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)" opacity="0.5"/>
+<g class="c-blue"><rect x="300" y="85" width="80" height="54" rx="8" stroke-width="0.5"/><text class="th" x="340" y="108" text-anchor="middle">Refinery</text><text class="ts" x="340" y="124" text-anchor="middle">converts</text></g>
+<line x1="382" y1="112" x2="438" y2="112" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)" opacity="0.5"/>
+<text class="ts" x="550" y="78" text-anchor="middle" fill="#5F5E5A">OUTPUT (revenue)</text>
+<g class="c-teal"><rect x="440" y="85" width="220" height="54" rx="8" stroke-width="0.5"/><text class="th" x="550" y="108" text-anchor="middle">2 × RBOB + 1 × ULSD</text><text class="ts" x="550" y="126" text-anchor="middle">product revenue / 3 bbl</text></g>
+<rect x="20" y="168" width="640" height="2" rx="1" fill="#D3D1C7"/>
+<text class="th" x="340" y="196" text-anchor="middle" fill="#2C2C2A">Formula (all prices in USD/bbl)</text>
+<g class="c-blue"><rect x="60" y="210" width="560" height="54" rx="8" stroke-width="0.5"/><text class="th" x="340" y="234" text-anchor="middle">3-2-1 crack spread = (2 × RBOB + 1 × ULSD) ÷ 3 − WTI</text><text class="ts" x="340" y="252" text-anchor="middle">convert $/gallon → $/bbl by multiplying by 42</text></g>
+<text class="th" x="340" y="298" text-anchor="middle" fill="#2C2C2A">Worked example</text>
+<g class="c-gray"><rect x="20" y="312" width="148" height="66" rx="6" stroke-width="0.5"/><text class="th" x="94" y="335" text-anchor="middle">WTI crude</text><text class="ts" x="94" y="352" text-anchor="middle">$91.00 / bbl</text><text class="ts" x="94" y="368" text-anchor="middle">× 3 = $273.00</text></g>
+<text class="th" x="195" y="352" text-anchor="middle" fill="#5F5E5A">vs</text>
+<g class="c-teal"><rect x="210" y="312" width="148" height="66" rx="6" stroke-width="0.5"/><text class="th" x="284" y="335" text-anchor="middle">RBOB gasoline</text><text class="ts" x="284" y="352" text-anchor="middle">$2.80 / gal × 42</text><text class="ts" x="284" y="368" text-anchor="middle">= $117.60 / bbl</text></g>
+<text class="th" x="385" y="352" text-anchor="middle" fill="#5F5E5A">+</text>
+<g class="c-teal"><rect x="400" y="312" width="148" height="66" rx="6" stroke-width="0.5"/><text class="th" x="474" y="335" text-anchor="middle">ULSD diesel</text><text class="ts" x="474" y="352" text-anchor="middle">$2.95 / gal × 42</text><text class="ts" x="474" y="368" text-anchor="middle">= $123.90 / bbl</text></g>
+<text class="th" x="582" y="345" text-anchor="middle" fill="#5F5E5A">=</text>
+<g class="c-amber"><rect x="594" y="312" width="68" height="66" rx="6" stroke-width="0.5"/><text class="th" x="628" y="338" text-anchor="middle">Crack</text><text class="th" x="628" y="356" text-anchor="middle">spread</text><text class="ts" x="628" y="372" text-anchor="middle">≈ $28</text></g>
+<text class="ts" x="340" y="396" text-anchor="middle" fill="#5F5E5A">(2 × $117.60 + $123.90) ÷ 3 − $91.00 = $119.70 − $91.00 ≈ $28.70 / bbl gross margin</text>
+</svg>

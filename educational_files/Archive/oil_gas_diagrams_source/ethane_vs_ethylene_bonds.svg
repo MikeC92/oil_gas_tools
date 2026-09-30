@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="680" height="260" viewBox="0 0 680 260" role="img" xmlns="http://www.w3.org/2000/svg">
+<style>
+text{font-family:'IBM Plex Sans','Segoe UI',Arial,sans-serif}
+.th{font-size:13px;font-weight:600;fill:#1A1A18}
+.ts{font-size:11px;fill:#62615C}
+.node{stroke-width:.5}
+.arr{stroke:#5F5E5A;stroke-width:1;fill:none;opacity:.6}
+.leader{stroke:#5F5E5A;stroke-width:.5;opacity:.4}
+g.c-blue>rect,g.c-blue>circle,rect.c-blue,circle.c-blue{fill:#E6F1FB;stroke:#185FA5}
+g.c-blue>.th{fill:#0C447C} g.c-blue>.ts{fill:#185FA5}
+g.c-teal>rect,g.c-teal>circle,rect.c-teal,circle.c-teal{fill:#E1F5EE;stroke:#0F6E56}
+g.c-teal>.th{fill:#085041} g.c-teal>.ts{fill:#0F6E56}
+g.c-coral>rect,g.c-coral>circle,rect.c-coral,circle.c-coral{fill:#FAECE7;stroke:#D85A30}
+g.c-coral>.th{fill:#712B13} g.c-coral>.ts{fill:#993C1D}
+g.c-amber>rect,g.c-amber>circle,rect.c-amber,circle.c-amber{fill:#FAEEDA;stroke:#BA7517}
+g.c-amber>.th{fill:#633806} g.c-amber>.ts{fill:#854F0B}
+g.c-gray>rect,g.c-gray>circle,rect.c-gray,circle.c-gray{fill:#F1EFE8;stroke:#888780}
+g.c-gray>.th{fill:#2C2C2A} g.c-gray>.ts{fill:#5F5E5A}
+g.c-purple>rect,g.c-purple>circle,rect.c-purple,circle.c-purple{fill:#EEEDFB;stroke:#534AB7}
+g.c-purple>.th{fill:#3C3489} g.c-purple>.ts{fill:#534AB7}
+g.c-green>rect,g.c-green>circle,rect.c-green,circle.c-green{fill:#EDF5E5;stroke:#6a9a58}
+g.c-green>.th{fill:#27500A} g.c-green>.ts{fill:#3d6b2a}
+</style>
+<title>Ethane versus ethylene molecular structure</title>
+<text class="th" x="170" y="34" text-anchor="middle" fill="#2C2C2A">Ethane — C2H6</text>
+<text class="ts" x="170" y="52" text-anchor="middle" fill="#5F5E5A">single bond, saturated, stable</text>
+<line x1="130" y1="130" x2="210" y2="130" stroke="#5F5E5A" stroke-width="2"/>
+<circle class="c-gray" cx="130" cy="130" r="18" stroke-width="0.5"/>
+<circle class="c-gray" cx="210" cy="130" r="18" stroke-width="0.5"/>
+<text class="th" x="130" y="130" text-anchor="middle" dominant-baseline="central">C</text>
+<text class="th" x="210" y="130" text-anchor="middle" dominant-baseline="central">C</text>
+<line x1="130" y1="112" x2="100" y2="80" stroke="#5F5E5A" stroke-width="1"/>
+<line x1="112" y1="130" x2="70" y2="130" stroke="#5F5E5A" stroke-width="1"/>
+<line x1="130" y1="148" x2="100" y2="180" stroke="#5F5E5A" stroke-width="1"/>
+<line x1="210" y1="112" x2="240" y2="80" stroke="#5F5E5A" stroke-width="1"/>
+<line x1="228" y1="130" x2="270" y2="130" stroke="#5F5E5A" stroke-width="1"/>
+<line x1="210" y1="148" x2="240" y2="180" stroke="#5F5E5A" stroke-width="1"/>
+<text class="ts" x="90" y="76" text-anchor="middle">H</text><text class="ts" x="60" y="134" text-anchor="middle">H</text><text class="ts" x="90" y="188" text-anchor="middle">H</text>
+<text class="ts" x="250" y="76" text-anchor="middle">H</text><text class="ts" x="280" y="134" text-anchor="middle">H</text><text class="ts" x="250" y="188" text-anchor="middle">H</text>
+<text class="ts" x="170" y="230" text-anchor="middle" fill="#5F5E5A">6 hydrogens fill every open bond — nothing left to react with</text>
+<text class="th" x="510" y="34" text-anchor="middle" fill="#2C2C2A">Ethylene — C2H4</text>
+<text class="ts" x="510" y="52" text-anchor="middle" fill="#5F5E5A">double bond, reactive, polymerizes</text>
+<line x1="470" y1="126" x2="550" y2="126" stroke="#5F5E5A" stroke-width="2"/>
+<line x1="470" y1="134" x2="550" y2="134" stroke="#D85A30" stroke-width="2"/>
+<circle class="c-coral" cx="470" cy="130" r="18" stroke-width="0.5"/>
+<circle class="c-coral" cx="550" cy="130" r="18" stroke-width="0.5"/>
+<text class="th" x="470" y="130" text-anchor="middle" dominant-baseline="central">C</text>
+<text class="th" x="550" y="130" text-anchor="middle" dominant-baseline="central">C</text>
+<line x1="470" y1="112" x2="440" y2="80" stroke="#5F5E5A" stroke-width="1"/>
+<line x1="470" y1="148" x2="440" y2="180" stroke="#5F5E5A" stroke-width="1"/>
+<line x1="550" y1="112" x2="580" y2="80" stroke="#5F5E5A" stroke-width="1"/>
+<line x1="550" y1="148" x2="580" y2="180" stroke="#5F5E5A" stroke-width="1"/>
+<text class="ts" x="430" y="76" text-anchor="middle">H</text><text class="ts" x="430" y="188" text-anchor="middle">H</text>
+<text class="ts" x="590" y="76" text-anchor="middle">H</text><text class="ts" x="590" y="188" text-anchor="middle">H</text>
+<text class="ts" x="510" y="230" text-anchor="middle" fill="#5F5E5A">double bond is a spring — snaps open to link the next molecule</text>
+</svg>

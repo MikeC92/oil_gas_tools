@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="680" height="520" viewBox="0 0 680 520" xmlns="http://www.w3.org/2000/svg">
+<style>
+text{font-family:'IBM Plex Sans','Segoe UI',Arial,sans-serif}
+.th{font-size:13px;font-weight:600;fill:#1A1A18}
+.ts{font-size:11px;fill:#62615C}
+.node{stroke-width:.5}
+.arr{stroke:#5F5E5A;stroke-width:1;fill:none;opacity:.6}
+.leader{stroke:#5F5E5A;stroke-width:.5;opacity:.4}
+g.c-blue>rect,g.c-blue>circle,rect.c-blue,circle.c-blue{fill:#E6F1FB;stroke:#185FA5}
+g.c-blue>.th{fill:#0C447C} g.c-blue>.ts{fill:#185FA5}
+g.c-teal>rect,g.c-teal>circle,rect.c-teal,circle.c-teal{fill:#E1F5EE;stroke:#0F6E56}
+g.c-teal>.th{fill:#085041} g.c-teal>.ts{fill:#0F6E56}
+g.c-coral>rect,g.c-coral>circle,rect.c-coral,circle.c-coral{fill:#FAECE7;stroke:#D85A30}
+g.c-coral>.th{fill:#712B13} g.c-coral>.ts{fill:#993C1D}
+g.c-amber>rect,g.c-amber>circle,rect.c-amber,circle.c-amber{fill:#FAEEDA;stroke:#BA7517}
+g.c-amber>.th{fill:#633806} g.c-amber>.ts{fill:#854F0B}
+g.c-gray>rect,g.c-gray>circle,rect.c-gray,circle.c-gray{fill:#F1EFE8;stroke:#888780}
+g.c-gray>.th{fill:#2C2C2A} g.c-gray>.ts{fill:#5F5E5A}
+g.c-purple>rect,g.c-purple>circle,rect.c-purple,circle.c-purple{fill:#EEEDFB;stroke:#534AB7}
+g.c-purple>.th{fill:#3C3489} g.c-purple>.ts{fill:#534AB7}
+g.c-green>rect,g.c-green>circle,rect.c-green,circle.c-green{fill:#EDF5E5;stroke:#6a9a58}
+g.c-green>.th{fill:#27500A} g.c-green>.ts{fill:#3d6b2a}
+</style>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+
+<!-- POROSITY panel -->
+<text class="th" x="160" y="22" text-anchor="middle" font-size="13">Porosity — how much space?</text>
+<text class="ts" x="160" y="38" text-anchor="middle">φ = Vpore / Vtotal</text>
+
+<!-- High porosity rock -->
+<rect x="30" y="52" width="130" height="130" rx="6" fill="#e8d99a" stroke="#D3D1C7" stroke-width="0.5"/>
+<text class="ts" x="95" y="70" text-anchor="middle" fill="#633806" font-size="10">High porosity ~28%</text>
+<!-- Grains (circles) arranged loosely -->
+<circle cx="68" cy="100" r="22" fill="#b8a870" stroke="#9e8e58" stroke-width="0.5"/>
+<circle cx="115" cy="95" r="20" fill="#b8a870" stroke="#9e8e58" stroke-width="0.5"/>
+<circle cx="70" cy="148" r="21" fill="#b8a870" stroke="#9e8e58" stroke-width="0.5"/>
+<circle cx="118" cy="145" r="22" fill="#b8a870" stroke="#9e8e58" stroke-width="0.5"/>
+<!-- Pore spaces filled with oil -->
+<ellipse cx="95" cy="122" rx="14" ry="12" fill="#c08020" opacity="0.7"/>
+<ellipse cx="48" cy="130" rx="10" ry="14" fill="#5ba3cc" opacity="0.5"/>
+<ellipse cx="143" cy="120" rx="9" ry="16" fill="#c08020" opacity="0.6"/>
+<text class="ts" x="95" y="175" text-anchor="middle" fill="#5F5E5A" font-size="9">Loose-packed grains</text>
+<text class="ts" x="95" y="187" text-anchor="middle" fill="#5F5E5A" font-size="9">Large pore spaces</text>
+
+<!-- Low porosity rock -->
+<rect x="190" y="52" width="130" height="130" rx="6" fill="#c8c1a8" stroke="#D3D1C7" stroke-width="0.5"/>
+<text class="ts" x="255" y="70" text-anchor="middle" fill="#2C2C2A" font-size="10">Low porosity ~8%</text>
+<!-- Grains tightly packed with cement -->
+<circle cx="228" cy="96" r="24" fill="#888780" stroke="#5F5E5A" stroke-width="0.5"/>
+<circle cx="278" cy="92" r="23" fill="#888780" stroke="#5F5E5A" stroke-width="0.5"/>
+<circle cx="225" cy="144" r="23" fill="#888780" stroke="#5F5E5A" stroke-width="0.5"/>
+<circle cx="276" cy="147" r="24" fill="#888780" stroke="#5F5E5A" stroke-width="0.5"/>
+<!-- Cement filling pores -->
+<ellipse cx="254" cy="118" rx="8" ry="7" fill="#7a6e55" opacity="0.8"/>
+<ellipse cx="214" cy="124" rx="5" ry="8" fill="#7a6e55" opacity="0.7"/>
+<ellipse cx="296" cy="120" rx="5" ry="8" fill="#7a6e55" opacity="0.7"/>
+<text class="ts" x="255" y="175" text-anchor="middle" fill="#5F5E5A" font-size="9">Cemented / compacted</text>
+<text class="ts" x="255" y="187" text-anchor="middle" fill="#5F5E5A" font-size="9">Pores partially filled</text>
+
+<!-- Porosity scale -->
+<rect x="30" y="200" width="290" height="60" rx="6" fill="none" stroke="#D3D1C7" stroke-width="0.5" stroke-dasharray="4 3"/>
+<text class="th" x="175" y="218" text-anchor="middle" font-size="11">Typical porosity ranges</text>
+<text class="ts" x="50" y="236" font-size="10">Excellent sandstone: 25–35%   Good carbonate: 15–25%</text>
+<text class="ts" x="50" y="252" font-size="10">Tight sand: 8–15%   Shale (total): 3–10%   Chalk: 20–45%</text>
+
+<!-- PERMEABILITY panel -->
+<text class="th" x="510" y="22" text-anchor="middle" font-size="13">Permeability — how easily?</text>
+<text class="ts" x="510" y="38" text-anchor="middle">k = how connected are the pores?</text>
+
+<!-- Connected pores (high perm) -->
+<rect x="370" y="52" width="130" height="130" rx="6" fill="#e6f1fb" stroke="#D3D1C7" stroke-width="0.5"/>
+<text class="ts" x="435" y="70" text-anchor="middle" fill="#185FA5" font-size="10">High perm — connected</text>
+<!-- Flow path through connected pores -->
+<circle cx="395" cy="95" r="18" fill="#85B7EB" opacity="0.6"/>
+<circle cx="440" cy="100" r="16" fill="#85B7EB" opacity="0.6"/>
+<circle cx="480" cy="95" r="17" fill="#85B7EB" opacity="0.6"/>
+<circle cx="408" cy="140" r="16" fill="#85B7EB" opacity="0.5"/>
+<circle cx="455" cy="143" r="17" fill="#85B7EB" opacity="0.5"/>
+<!-- Throat connections -->
+<line x1="413" y1="95" x2="424" y2="100" stroke="#185FA5" stroke-width="4" opacity="0.5"/>
+<line x1="456" y1="100" x2="463" y2="95" stroke="#185FA5" stroke-width="4" opacity="0.5"/>
+<line x1="400" y1="113" x2="408" y2="124" stroke="#185FA5" stroke-width="3" opacity="0.5"/>
+<line x1="424" y1="140" x2="438" y2="143" stroke="#185FA5" stroke-width="4" opacity="0.5"/>
+<!-- Flow arrow -->
+<line x1="375" y1="118" x2="494" y2="118" class="arr" stroke="#185FA5" stroke-width="1.8" marker-end="url(#arrow)" stroke-dasharray="5 3"/>
+<text class="ts" x="435" y="113" text-anchor="middle" fill="#185FA5" font-size="9">flow →</text>
+<text class="ts" x="435" y="175" text-anchor="middle" fill="#5F5E5A" font-size="9">Pore throats connected</text>
+<text class="ts" x="435" y="187" text-anchor="middle" fill="#5F5E5A" font-size="9">Fluid flows easily</text>
+
+<!-- Disconnected pores (low perm) -->
+<rect x="520" y="52" width="130" height="130" rx="6" fill="#faeeda" stroke="#D3D1C7" stroke-width="0.5"/>
+<text class="ts" x="585" y="70" text-anchor="middle" fill="#633806" font-size="10">Low perm — isolated</text>
+<!-- Isolated pore bubbles -->
+<circle cx="548" cy="95" r="16" fill="#FAC775" opacity="0.7"/>
+<circle cx="595" cy="100" r="14" fill="#FAC775" opacity="0.7"/>
+<circle cx="632" cy="92" r="15" fill="#FAC775" opacity="0.7"/>
+<circle cx="552" cy="142" r="15" fill="#FAC775" opacity="0.6"/>
+<circle cx="600" cy="145" r="14" fill="#FAC775" opacity="0.6"/>
+<circle cx="638" cy="140" r="13" fill="#FAC775" opacity="0.6"/>
+<!-- No connections — blocked throats -->
+<line x1="565" y1="98" x2="578" y2="100" stroke="#BA7517" stroke-width="1" opacity="0.3"/>
+<line x1="611" y1="100" x2="617" y2="95" stroke="#BA7517" stroke-width="1" opacity="0.3"/>
+<!-- Blocked flow arrow -->
+<line x1="525" y1="118" x2="556" y2="118" stroke="#BA7517" stroke-width="1.5" opacity="0.5"/>
+<text class="ts" x="580" y="122" text-anchor="middle" fill="#BA7517" font-size="10">✕ blocked</text>
+<text class="ts" x="585" y="175" text-anchor="middle" fill="#5F5E5A" font-size="9">Isolated pores</text>
+<text class="ts" x="585" y="187" text-anchor="middle" fill="#5F5E5A" font-size="9">No flow pathway</text>
+
+<!-- Permeability scale -->
+<rect x="370" y="200" width="280" height="60" rx="6" fill="none" stroke="#D3D1C7" stroke-width="0.5" stroke-dasharray="4 3"/>
+<text class="th" x="510" y="218" text-anchor="middle" font-size="11">Permeability scale (millidarcies, mD)</text>
+<text class="ts" x="388" y="236" font-size="10">Excellent: &gt;500 mD   Good: 10–500 mD   Tight: 0.1–10 mD</text>
+<text class="ts" x="388" y="252" font-size="10">Shale: 0.0001–0.001 mD (nanodarcies!)   Need fracking</text>
+
+<!-- Key insight box -->
+<rect x="30" y="278" width="620" height="56" rx="8" fill="#F4F2EC" stroke="#D3D1C7" stroke-width="0.5"/>
+<text class="th" x="340" y="298" text-anchor="middle" font-size="12">The critical distinction</text>
+<text class="ts" x="50" y="318" font-size="11">Porosity = storage capacity (the tank).   Permeability = deliverability (the tap).</text>
+<text class="ts" x="50" y="334" font-size="11">Shale has porosity but near-zero permeability — that's why fracking is essential. Chalk has great porosity but poor perm.</text>
+
+<!-- Saturation concept -->
+<rect x="30" y="350" width="290" height="140" rx="8" fill="none" stroke="#D3D1C7" stroke-width="0.5"/>
+<text class="th" x="175" y="370" text-anchor="middle" font-size="12">Fluid saturation</text>
+<text class="ts" x="50" y="390" font-size="11">Pore space is always shared between fluids:</text>
+<text class="ts" x="50" y="408" font-size="11">  So + Sw + Sg = 1.0  (always sums to 100%)</text>
+<text class="ts" x="50" y="428" font-size="11">  So = oil saturation (what we want)</text>
+<text class="ts" x="50" y="446" font-size="11">  Sw = water saturation (always present — irreducible Sw)</text>
+<text class="ts" x="50" y="464" font-size="11">  Sg = gas saturation (free gas cap or solution gas)</text>
+<text class="ts" x="50" y="482" font-size="11">  Resistivity log reads Sw → infers So from 1−Sw−Sg</text>
+
+<!-- Relative permeability concept -->
+<rect x="360" y="350" width="290" height="140" rx="8" fill="none" stroke="#D3D1C7" stroke-width="0.5"/>
+<text class="th" x="505" y="370" text-anchor="middle" font-size="12">Relative permeability (kr)</text>
+<text class="ts" x="378" y="390" font-size="11">At mixed saturations, each fluid has reduced perm:</text>
+<text class="ts" x="378" y="408" font-size="11">  kro = oil perm when water also present (kr ≤ 1)</text>
+<text class="ts" x="378" y="426" font-size="11">  krw = water perm when oil also present</text>
+<text class="ts" x="378" y="444" font-size="11">  At Sw = irreducible: krw = 0, kro at max</text>
+<text class="ts" x="378" y="462" font-size="11">  As waterflood advances: krw rises, kro falls</text>
+<text class="ts" x="378" y="480" font-size="11">  Crossover point = economic water cut approaching</text>
+</svg>

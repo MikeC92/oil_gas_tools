@@ -1,0 +1,45 @@
+lng_export_monitor.ipynb
+Sources : EIA API v2 (LNG export volumes)
+          yfinance (Henry Hub NG=F, TTF=F European gas)
+          EUR/USD FX rate (yfinance EURUSD=X)
+Refresh : Wednesdays after 10:30am ET (EIA monthly release - check the release date and update here)
+          Any time for price data refresh
+
+Cell 1 — Imports and configuration
+Standard imports plus yfinance and requests. EIA API key from config. Two key constants unique to this tool: LNG_BREAKEVEN (~$5.00/MMbtu, the approximate combined liquefaction fee plus shipping cost that a US cargo must clear before export is economic) and FX_FALLBACK (a hardcoded EUR/USD rate used if yfinance FX data is unavailable). Cache paths for HH and TTF price history.
+
+Cell 2 — EIA fetch function
+Same fetch_eia_series() as Tools 1, 3. Retyped for self-containment.
+
+Cell 3 — Pull EIA LNG export volumes
+Fetches two EIA series from /natural-gas/move/expc/data/:
+US LNG exports (process code ENG) in Bcf per month
+Sets nameplate LNG export capacity in Bcf/d weekly
+Computes utilization rate (exports / capacity). This is the physical volume side of the tool. The nameplate capacity will serve as a benchmark in charts later.
+
+Cell 4 — Fetch price benchmarks
+Fetches three price series via yfinance:
+Henry Hub front month (NG=F) — the feedgas cost
+TTF European gas (TTF=F) — the destination price benchmark
+EUR/USD FX rate (EURUSD=X) — needed to convert TTF from EUR/MWh to USD/MMbtu
+TTF trades on ICE in EUR/MWh. The conversion to USD/MMbtu is: TTF (EUR/MWh) × EUR/USD rate ÷ 0.29307 (MWh per MMbtu). Handles TTF unavailability gracefully with a clear note about the data limitation. Resamples all price data to weekly Friday close for alignment with EIA export volumes.
+
+Cell 5 — Merge and compute spread analytics
+Merges weekly LNG export volumes with weekly price data using merge_asof. Computes:
+HH-TTF gross spread (TTF minus HH in USD/MMbtu)
+Net arbitrage (gross spread minus LNG_BREAKEVEN)
+Rolling 52-week spread statistics (mean, std, z-score)
+Export economics signal: whether the net arb is positive (exports economic), marginal, or negative (cargo cancellation risk)
+4-week and 52-week average export volumes for context
+
+Cell 6 — Three-panel chart
+Three panels stacked vertically:
+Panel 1: US LNG export volumes (Bcf/d) as bars with 4-week rolling average overlay and capacity line
+Panel 2: Henry Hub vs TTF price history (both in USD/MMbtu for direct comparison)
+Panel 3: HH-TTF gross spread with rolling mean, breakeven line at ~$5/MMbtu, and color-coded fill (green above breakeven = economic, amber = marginal, red = uneconomic)
+
+Cell 7 — Signal dashboard and plain English summary
+Prints: current export volume vs 4-week and 52-week averages, YoY comparison, capacity utilization, current HH and TTF prices, gross spread and net arbitrage, spread z-score, export economics signal, and injection season context connecting back to Tool 3 storage data. Plain English paragraph framing the LNG export economics in the context of the current market — particularly relevant right now given WTI at $97 and HH at $2.65.
+
+Cell 8 — Save data and wrap up
+Saves combined dataset to CSV. Prints next EIA release date, cross-tool workflow note, and EIA series reference with verified codes.

@@ -1,0 +1,32 @@
+Outline & cell descriptions
+gas_storage_tracker.ipynb
+Source  : EIA API v2
+Release : Every Thursday 10:30am ET
+Analog  : Direct parallel to Tool 1 (crude inventory tracker)
+          Same architecture, different commodity and EIA series
+Cell 1 — Imports and configuration
+Standard library imports, path setup, EIA API key from config, date range constants, and a confirmation print block. Identical pattern to Tool 1 Cell 1. The only meaningful difference is we set a GAS_START_DATE going back 5+ years to build a robust seasonal range.
+
+Cell 2 — EIA fetch function
+Reuses the exact fetch_eia_series() function from Tool 1. No changes needed — it's generic enough to handle any EIA v2 route. Worth retyping rather than importing so each notebook is fully self-contained.
+
+Cell 3 — Pull gas storage data from EIA
+Fetches weekly working gas in storage for 8 regions: US Total, East, Midwest, Mountain, Pacific, South Central. All use the same route (/natural-gas/stor/wkly/data/) with different duoarea facet codes. Merges all regions into a single DataFrame on date. Units are Bcf — no conversion needed (unlike crude which needed Mbbl → MMbbl).
+
+Cell 4 — Validate and split current vs historical
+Same validation pattern as Tool 1 Cell 4. Checks plausible physical ranges per region, flags any gaps in weekly sequence, adds week_id column (1–52, clipped), and splits into df_current and df_history.
+
+Cell 5 — Build 5-year seasonal range
+Reuses build_seasonal_range() logic from Tool 1 Cell 5. Builds mean, min, max, std, and prior-year reference for each week of year. Runs for US total and South Central (the two panels we'll chart). Calculates deviation in Bcf and in standard deviations (z-score). Prints a quick summary of the latest reading vs seasonal average.
+
+Cell 6 — Plot: US gas storage vs 5-year seasonal range
+Two-panel chart mirroring Tool 1 Cell 6. Top panel: US total working gas vs 5-year min/max band, mean dashed line, prior year, current year. Bottom panel: South Central region — most commercially relevant because it includes the salt cavern storage that moves fastest and is most responsive to Henry Hub price signals. Same annotation box showing Bcf deviation and sigma.
+
+Cell 7 — Regional breakdown bar chart
+A chart unique to Tool 3 (no crude analog). Side-by-side grouped bar chart showing current storage vs 5-year average for each of the five regions (East, Midwest, South Central, Mountain, Pacific). Second panel shows deviation from average per region in absolute Bcf. Useful for spotting where surpluses or deficits are concentrated geographically — a South Central deficit hits Henry Hub prices faster than an equivalent Pacific deficit.
+
+Cell 8 — Signal dashboard and plain English summary
+Mirrors Tool 1 Cell 7. Computes z-score, percentile rank vs same week historically, week-on-week change (labeled "injection" or "withdrawal"), year-on-year comparison, and an injection season pace tracker (Apr–Oct weekly average vs historical average). Prints a signal label (BULLISH/BEARISH/NEUTRAL for Henry Hub prices) and a plain English paragraph suitable for a morning note. Note: signal direction is inverted vs crude — below-average gas storage is bullish for Henry Hub prices, same as crude, but the injection/withdrawal seasonal pattern is what makes gas storage unique.
+
+Cell 9 — Save data and wrap up
+Saves the current-year storage data with seasonal context columns to CSV in the data/ directory. Prints next release date (Thursday), reminds you to run Tool 3 before Tool 5 (LNG tracker) on Thursdays, and summarizes the EIA series codes used.

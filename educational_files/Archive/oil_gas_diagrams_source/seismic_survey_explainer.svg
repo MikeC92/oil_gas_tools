@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="680" height="480" viewBox="0 0 680 480" xmlns="http://www.w3.org/2000/svg">
+<style>
+text{font-family:'IBM Plex Sans','Segoe UI',Arial,sans-serif}
+.th{font-size:13px;font-weight:600;fill:#1A1A18}
+.ts{font-size:11px;fill:#62615C}
+.node{stroke-width:.5}
+.arr{stroke:#5F5E5A;stroke-width:1;fill:none;opacity:.6}
+.leader{stroke:#5F5E5A;stroke-width:.5;opacity:.4}
+g.c-blue>rect,g.c-blue>circle,rect.c-blue,circle.c-blue{fill:#E6F1FB;stroke:#185FA5}
+g.c-blue>.th{fill:#0C447C} g.c-blue>.ts{fill:#185FA5}
+g.c-teal>rect,g.c-teal>circle,rect.c-teal,circle.c-teal{fill:#E1F5EE;stroke:#0F6E56}
+g.c-teal>.th{fill:#085041} g.c-teal>.ts{fill:#0F6E56}
+g.c-coral>rect,g.c-coral>circle,rect.c-coral,circle.c-coral{fill:#FAECE7;stroke:#D85A30}
+g.c-coral>.th{fill:#712B13} g.c-coral>.ts{fill:#993C1D}
+g.c-amber>rect,g.c-amber>circle,rect.c-amber,circle.c-amber{fill:#FAEEDA;stroke:#BA7517}
+g.c-amber>.th{fill:#633806} g.c-amber>.ts{fill:#854F0B}
+g.c-gray>rect,g.c-gray>circle,rect.c-gray,circle.c-gray{fill:#F1EFE8;stroke:#888780}
+g.c-gray>.th{fill:#2C2C2A} g.c-gray>.ts{fill:#5F5E5A}
+g.c-purple>rect,g.c-purple>circle,rect.c-purple,circle.c-purple{fill:#EEEDFB;stroke:#534AB7}
+g.c-purple>.th{fill:#3C3489} g.c-purple>.ts{fill:#534AB7}
+g.c-green>rect,g.c-green>circle,rect.c-green,circle.c-green{fill:#EDF5E5;stroke:#6a9a58}
+g.c-green>.th{fill:#27500A} g.c-green>.ts{fill:#3d6b2a}
+</style>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+<linearGradient id="surf" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0%" stop-color="#8db87a"/>
+  <stop offset="100%" stop-color="#6a9a58"/>
+</linearGradient>
+<linearGradient id="layer1g" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0%" stop-color="#d4c89a"/>
+  <stop offset="100%" stop-color="#c2b282"/>
+</linearGradient>
+<linearGradient id="layer2g" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0%" stop-color="#b8a870"/>
+  <stop offset="100%" stop-color="#9e8e58"/>
+</linearGradient>
+<linearGradient id="layer3g" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0%" stop-color="#7a6e55"/>
+  <stop offset="100%" stop-color="#5e5440"/>
+</linearGradient>
+</defs>
+
+<!-- Surface -->
+<rect x="0" y="60" width="680" height="24" fill="url(#surf)"/>
+<text class="ts" x="12" y="75" fill="#173404" font-size="11">Ground surface</text>
+
+<!-- Source truck / vibroseis -->
+<rect x="68" y="30" width="48" height="28" rx="4" fill="#444441"/>
+<rect x="72" y="42" width="40" height="16" rx="2" fill="#888780"/>
+<rect x="82" y="28" width="8" height="14" rx="2" fill="#BA7517"/>
+<text class="ts" x="92" y="22" text-anchor="middle" fill="#633806" font-size="10">Vibroseis</text>
+<text class="ts" x="92" y="12" text-anchor="middle" fill="#633806" font-size="10">source</text>
+
+<!-- Receivers (geophones) -->
+<circle cx="200" cy="64" r="5" fill="#185FA5"/>
+<circle cx="280" cy="64" r="5" fill="#185FA5"/>
+<circle cx="360" cy="64" r="5" fill="#185FA5"/>
+<circle cx="440" cy="64" r="5" fill="#185FA5"/>
+<circle cx="520" cy="64" r="5" fill="#185FA5"/>
+<circle cx="600" cy="64" r="5" fill="#185FA5"/>
+<text class="ts" x="400" y="52" text-anchor="middle" fill="#185FA5" font-size="10">Receivers (geophones / hydrophones)</text>
+
+<!-- Subsurface layers -->
+<rect x="0" y="84" width="680" height="100" fill="url(#layer1g)" opacity="0.9"/>
+<text class="ts" x="20" y="120" fill="#2C2C2A" font-size="11">Layer 1 — shale (overburden)</text>
+
+<rect x="0" y="184" width="680" height="90" fill="url(#layer2g)" opacity="0.9"/>
+<text class="ts" x="20" y="218" fill="#2C2C2A" font-size="11">Layer 2 — sandstone reservoir</text>
+
+<!-- Oil in reservoir -->
+<ellipse cx="400" cy="225" rx="110" ry="22" fill="#c08020" opacity="0.55"/>
+<text class="ts" x="400" y="229" text-anchor="middle" fill="#fff" font-size="10">Oil-bearing zone</text>
+
+<rect x="0" y="274" width="680" height="80" fill="url(#layer3g)" opacity="0.9"/>
+<text class="ts" x="20" y="306" fill="#D3D1C7" font-size="11">Layer 3 — basement / source rock</text>
+
+<!-- Sound wave paths from source -->
+<!-- Direct wave to first receiver -->
+<line x1="92" y1="60" x2="200" y2="64" stroke="#E8593C" stroke-width="1" stroke-dasharray="3 2" opacity="0.5"/>
+
+<!-- Wave down to layer 1 boundary, reflect up to receivers -->
+<polyline points="92,60 150,184 200,64" fill="none" stroke="#E8593C" stroke-width="1.2" stroke-dasharray="4 2" opacity="0.7"/>
+<polyline points="92,60 200,184 280,64" fill="none" stroke="#E8593C" stroke-width="1.2" stroke-dasharray="4 2" opacity="0.6"/>
+<polyline points="92,60 270,184 360,64" fill="none" stroke="#E8593C" stroke-width="1.2" stroke-dasharray="4 2" opacity="0.5"/>
+
+<!-- Wave down to layer 2 boundary -->
+<polyline points="92,60 240,274 360,64" fill="none" stroke="#BA7517" stroke-width="1.2" stroke-dasharray="4 2" opacity="0.5"/>
+<polyline points="92,60 340,274 520,64" fill="none" stroke="#BA7517" stroke-width="1.2" stroke-dasharray="4 2" opacity="0.4"/>
+<polyline points="92,60 420,274 600,64" fill="none" stroke="#BA7517" stroke-width="1.2" stroke-dasharray="4 2" opacity="0.35"/>
+
+<!-- Reflection point labels -->
+<circle cx="150" cy="184" r="3" fill="#E8593C" opacity="0.8"/>
+<circle cx="200" cy="184" r="3" fill="#E8593C" opacity="0.8"/>
+<circle cx="270" cy="184" r="3" fill="#E8593C" opacity="0.8"/>
+<circle cx="240" cy="274" r="3" fill="#BA7517" opacity="0.8"/>
+<circle cx="340" cy="274" r="3" fill="#BA7517" opacity="0.8"/>
+
+<!-- Reflection labels -->
+<text class="ts" x="460" y="176" fill="#A32D2D" font-size="10">Layer 1 reflections</text>
+<line x1="458" y1="178" x2="360" y2="188" stroke="#E8593C" stroke-width="0.5" stroke-dasharray="2 2"/>
+<text class="ts" x="480" y="278" fill="#633806" font-size="10">Layer 2 reflections</text>
+<line x1="478" y1="274" x2="420" y2="274" stroke="#BA7517" stroke-width="0.5" stroke-dasharray="2 2"/>
+
+<!-- Right panel: what you record -->
+<rect x="590" y="84" width="78" height="270" rx="6" fill="#F4F2EC" stroke="#D3D1C7" stroke-width="0.5"/>
+<text class="ts" x="629" y="100" text-anchor="middle" fill="#5F5E5A" font-size="10">Recorded</text>
+<text class="ts" x="629" y="112" text-anchor="middle" fill="#5F5E5A" font-size="10">trace</text>
+<!-- Wiggly seismic trace -->
+<polyline points="629,118 618,125 640,135 618,148 640,162 625,172 635,190 615,205 640,220 618,235 640,248 625,262 635,275 629,290 629,350" fill="none" stroke="#185FA5" stroke-width="1.5"/>
+<text class="ts" x="629" y="365" text-anchor="middle" fill="#185FA5" font-size="9">wiggle trace</text>
+
+<!-- Legend bottom -->
+<rect x="20" y="375" width="540" height="80" rx="6" fill="none" stroke="#D3D1C7" stroke-width="0.5" stroke-dasharray="4 3"/>
+<text class="th" x="290" y="395" text-anchor="middle" font-size="12">What geophysicists do with the data</text>
+<text class="ts" x="40" y="416" font-size="11">• Stack thousands of traces → 2D or 3D volume of the subsurface</text>
+<text class="ts" x="40" y="434" font-size="11">• Velocity analysis → convert time to depth (depth migration)</text>
+<text class="ts" x="40" y="452" font-size="11">• Amplitude vs offset (AVO) → infer fluid type (gas vs oil vs brine) before drilling</text>
+</svg>

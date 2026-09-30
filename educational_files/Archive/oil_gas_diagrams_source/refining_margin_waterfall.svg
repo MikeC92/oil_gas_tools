@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="680" height="400" viewBox="0 0 680 400" role="img" xmlns="http://www.w3.org/2000/svg">
+<style>
+text{font-family:'IBM Plex Sans','Segoe UI',Arial,sans-serif}
+.th{font-size:13px;font-weight:600;fill:#1A1A18}
+.ts{font-size:11px;fill:#62615C}
+.node{stroke-width:.5}
+.arr{stroke:#5F5E5A;stroke-width:1;fill:none;opacity:.6}
+.leader{stroke:#5F5E5A;stroke-width:.5;opacity:.4}
+g.c-blue>rect,g.c-blue>circle,rect.c-blue,circle.c-blue{fill:#E6F1FB;stroke:#185FA5}
+g.c-blue>.th{fill:#0C447C} g.c-blue>.ts{fill:#185FA5}
+g.c-teal>rect,g.c-teal>circle,rect.c-teal,circle.c-teal{fill:#E1F5EE;stroke:#0F6E56}
+g.c-teal>.th{fill:#085041} g.c-teal>.ts{fill:#0F6E56}
+g.c-coral>rect,g.c-coral>circle,rect.c-coral,circle.c-coral{fill:#FAECE7;stroke:#D85A30}
+g.c-coral>.th{fill:#712B13} g.c-coral>.ts{fill:#993C1D}
+g.c-amber>rect,g.c-amber>circle,rect.c-amber,circle.c-amber{fill:#FAEEDA;stroke:#BA7517}
+g.c-amber>.th{fill:#633806} g.c-amber>.ts{fill:#854F0B}
+g.c-gray>rect,g.c-gray>circle,rect.c-gray,circle.c-gray{fill:#F1EFE8;stroke:#888780}
+g.c-gray>.th{fill:#2C2C2A} g.c-gray>.ts{fill:#5F5E5A}
+g.c-purple>rect,g.c-purple>circle,rect.c-purple,circle.c-purple{fill:#EEEDFB;stroke:#534AB7}
+g.c-purple>.th{fill:#3C3489} g.c-purple>.ts{fill:#534AB7}
+g.c-green>rect,g.c-green>circle,rect.c-green,circle.c-green{fill:#EDF5E5;stroke:#6a9a58}
+g.c-green>.th{fill:#27500A} g.c-green>.ts{fill:#3d6b2a}
+</style>
+<title>Refining margin waterfall</title>
+<text class="th" x="340" y="26" text-anchor="middle" fill="#2C2C2A">Refining economics, per barrel</text>
+<text class="ts" x="340" y="44" text-anchor="middle" fill="#5F5E5A">Illustrative values — a refiner is a spread business, not a price business</text>
+<line x1="60" y1="330" x2="640" y2="330" stroke="#5F5E5A" stroke-width="1" opacity="0.4"/>
+<rect x="80" y="90" width="90" height="240" rx="4" class="c-teal" stroke-width="0.5"/>
+<text class="th" x="125" y="80" text-anchor="middle" fill="#085041">$120</text>
+<text class="ts" x="125" y="348" text-anchor="middle" fill="#5F5E5A">Product</text>
+<text class="ts" x="125" y="362" text-anchor="middle" fill="#5F5E5A">revenue</text>
+<rect x="200" y="90" width="90" height="182" rx="4" class="c-coral" stroke-width="0.5"/>
+<text class="th" x="245" y="80" text-anchor="middle" fill="#712B13">−$91</text>
+<text class="ts" x="245" y="348" text-anchor="middle" fill="#5F5E5A">Crude</text>
+<text class="ts" x="245" y="362" text-anchor="middle" fill="#5F5E5A">cost</text>
+<rect x="320" y="272" width="90" height="58" rx="4" class="c-blue" stroke-width="0.5"/>
+<text class="th" x="365" y="262" text-anchor="middle" fill="#0C447C">$29</text>
+<text class="ts" x="365" y="348" text-anchor="middle" fill="#5F5E5A">Gross refining</text>
+<text class="ts" x="365" y="362" text-anchor="middle" fill="#5F5E5A">margin</text>
+<rect x="440" y="272" width="90" height="20" rx="4" class="c-amber" stroke-width="0.5"/>
+<text class="th" x="485" y="262" text-anchor="middle" fill="#633806">−$5</text>
+<text class="ts" x="485" y="348" text-anchor="middle" fill="#5F5E5A">Operating</text>
+<text class="ts" x="485" y="362" text-anchor="middle" fill="#5F5E5A">expense</text>
+<rect x="560" y="282" width="90" height="48" rx="4" class="c-blue" stroke-width="0.5"/>
+<text class="th" x="605" y="272" text-anchor="middle" fill="#0C447C">$24</text>
+<text class="ts" x="605" y="348" text-anchor="middle" fill="#5F5E5A">EBITDA</text>
+<text class="ts" x="605" y="362" text-anchor="middle" fill="#5F5E5A">per barrel</text>
+<line x1="170" y1="90" x2="200" y2="90" stroke="#5F5E5A" stroke-width="0.75" opacity="0.5" stroke-dasharray="3 3"/>
+<line x1="290" y1="272" x2="320" y2="272" stroke="#5F5E5A" stroke-width="0.75" opacity="0.5" stroke-dasharray="3 3"/>
+<line x1="410" y1="272" x2="440" y2="272" stroke="#5F5E5A" stroke-width="0.75" opacity="0.5" stroke-dasharray="3 3"/>
+<line x1="530" y1="292" x2="560" y2="292" stroke="#5F5E5A" stroke-width="0.75" opacity="0.5" stroke-dasharray="3 3"/>
+<text class="ts" x="340" y="388" text-anchor="middle" fill="#5F5E5A">Capture rate = realized GRM ÷ benchmark 3-2-1 crack spread. Below 100% is normal.</text>
+</svg>

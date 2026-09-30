@@ -1,0 +1,185 @@
+
+<!DOCTYPE html>
+<html>
+<head><style>
+canvas { width: 100%; max-width: 640px; display: block; margin: 0 auto; }
+.controls { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin: 10px 0 4px; font-size: 13px; color: var(--color-text-secondary); }
+.ctrl-group { display: flex; align-items: center; gap: 6px; }
+.ctrl-group input[type=range] { width: 100px; }
+.legend { display: flex; gap: 20px; justify-content: center; margin: 6px 0; font-size: 12px; color: var(--color-text-secondary); flex-wrap: wrap; }
+.leg-item { display: flex; align-items: center; gap: 5px; }
+.leg-swatch { width: 28px; height: 3px; border-radius: 2px; }
+</style></head>
+<body>
+<canvas id="dc" height="320"></canvas>
+<div class="controls">
+  <div class="ctrl-group"><label>Shale IP (boe/d)</label><input type="range" id="shaleIP" min="500" max="4000" value="2000" step="100"><span id="shaleIPVal">2000</span></div>
+  <div class="ctrl-group"><label>Conv IP (boe/d)</label><input type="range" id="convIP" min="200" max="2000" value="800" step="50"><span id="convIPVal">800</span></div>
+</div>
+<div class="legend">
+  <div class="leg-item"><div class="leg-swatch" style="background:#E8593C"></div>Shale (hyperbolic b=1.5)</div>
+  <div class="leg-item"><div class="leg-swatch" style="background:#185FA5"></div>Conventional (exponential)</div>
+  <div class="leg-item"><div class="leg-swatch" style="background:#1D9E75;border-top:2px dashed #1D9E75;height:0"></div>EUR (10yr cumulative)</div>
+</div>
+<canvas id="cum" height="200"></canvas>
+<div style="font-size:11px;color:var(--color-text-secondary);text-align:center;margin-top:4px" id="eurLabel"></div>
+
+<script>
+const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+const textCol = dark ? '#c2c0b6' : '#3d3d3a';
+const gridCol = dark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.07)';
+const bgCol = dark ? 'rgba(30,30,28,0)' : 'rgba(255,255,255,0)';
+
+function hyperbolic(qi, di, b, t) {
+  return qi / Math.pow(1 + b * di * t, 1/b);
+}
+function exponential(qi, di, t) {
+  return qi * Math.exp(-di * t);
+}
+
+function draw() {
+  const shaleIP = +document.getElementById('shaleIP').value;
+  const convIP  = +document.getElementById('convIP').value;
+  document.getElementById('shaleIPVal').textContent = shaleIP.toLocaleString();
+  document.getElementById('convIPVal').textContent  = convIP.toLocaleString();
+
+  const months = 120;
+  const shaleB  = 1.5;
+  const shaleDi = 0.08; // monthly initial decline
+  const convDi  = 0.025;
+
+  const shaleQ = [], convQ = [], shaleCum = [], convCum = [];
+  let sc = 0, cc = 0;
+  for (let m = 0; m <= months; m++) {
+    const sq = hyperbolic(shaleIP, shaleDi, shaleB, m);
+    const cq = exponential(convIP, convDi, m);
+    shaleQ.push(sq);
+    convQ.push(cq);
+    sc += sq / 30.44; // monthly → daily → cumulative bbls
+    cc += cq / 30.44;
+    shaleCum.push(sc);
+    convCum.push(cc);
+  }
+
+  const eurShale = shaleCum[months];
+  const eurConv  = convCum[months];
+  document.getElementById('eurLabel').textContent =
+    `10-yr EUR — Shale: ${(eurShale/1000).toFixed(0)}k boe  |  Conventional: ${(eurConv/1000).toFixed(0)}k boe`;
+
+  // --- Rate chart ---
+  const c1 = document.getElementById('dc');
+  const ctx = c1.getContext('2d');
+  const W = c1.offsetWidth * devicePixelRatio || 640;
+  const H = c1.offsetHeight * devicePixelRatio || 320;
+  c1.width = W; c1.height = H;
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+  const w = c1.offsetWidth || 640, h = c1.offsetHeight || 320;
+  const pad = {l:60,r:20,t:24,b:40};
+  const cw = w - pad.l - pad.r, ch = h - pad.t - pad.b;
+
+  ctx.clearRect(0,0,w,h);
+
+  // grid
+  const maxQ = Math.max(shaleIP, convIP) * 1.05;
+  for (let i=0;i<=5;i++) {
+    const y = pad.t + ch - (i/5)*ch;
+    ctx.beginPath(); ctx.moveTo(pad.l,y); ctx.lineTo(pad.l+cw,y);
+    ctx.strokeStyle = gridCol; ctx.lineWidth=1; ctx.stroke();
+    ctx.fillStyle = textCol; ctx.font = '11px sans-serif'; ctx.textAlign='right';
+    ctx.fillText(Math.round((i/5)*maxQ).toLocaleString(), pad.l-6, y+4);
+  }
+  for (let m=0;m<=120;m+=12) {
+    const x = pad.l + (m/months)*cw;
+    ctx.beginPath(); ctx.moveTo(x, pad.t); ctx.lineTo(x, pad.t+ch);
+    ctx.strokeStyle = gridCol; ctx.lineWidth=1; ctx.stroke();
+    ctx.fillStyle = textCol; ctx.font='11px sans-serif'; ctx.textAlign='center';
+    ctx.fillText('Yr '+(m/12), x, pad.t+ch+18);
+  }
+
+  ctx.fillStyle = textCol; ctx.font='11px sans-serif'; ctx.textAlign='center';
+  ctx.fillText('Production rate (boe/d)', w/2, h-4);
+  ctx.save(); ctx.translate(14, h/2); ctx.rotate(-Math.PI/2);
+  ctx.fillText('boe/d', 0, 0); ctx.restore();
+
+  // Shale curve
+  ctx.beginPath();
+  for (let m=0;m<=months;m++) {
+    const x = pad.l + (m/months)*cw;
+    const y = pad.t + ch - (shaleQ[m]/maxQ)*ch;
+    m===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+  }
+  ctx.strokeStyle='#E8593C'; ctx.lineWidth=2.5; ctx.stroke();
+
+  // Conv curve
+  ctx.beginPath();
+  for (let m=0;m<=months;m++) {
+    const x = pad.l + (m/months)*cw;
+    const y = pad.t + ch - (convQ[m]/maxQ)*ch;
+    m===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+  }
+  ctx.strokeStyle='#185FA5'; ctx.lineWidth=2.5; ctx.stroke();
+
+  // Year 1 annotation shale
+  const y1shale = hyperbolic(shaleIP, shaleDi, shaleB, 12);
+  const pctDecline = Math.round((1 - y1shale/shaleIP)*100);
+  ctx.fillStyle='#E8593C'; ctx.font='bold 11px sans-serif'; ctx.textAlign='left';
+  ctx.fillText(`−${pctDecline}% yr 1`, pad.l + (12/months)*cw + 4, pad.t + ch - (y1shale/maxQ)*ch - 6);
+
+  // --- Cumulative chart ---
+  const c2 = document.getElementById('cum');
+  const ctx2 = c2.getContext('2d');
+  const W2 = c2.offsetWidth * devicePixelRatio || 640;
+  const H2 = c2.offsetHeight * devicePixelRatio || 200;
+  c2.width = W2; c2.height = H2;
+  ctx2.scale(devicePixelRatio, devicePixelRatio);
+  const w2 = c2.offsetWidth || 640, h2 = c2.offsetHeight || 200;
+  const pad2 = {l:70,r:20,t:16,b:36};
+  const cw2 = w2-pad2.l-pad2.r, ch2 = h2-pad2.t-pad2.b;
+
+  ctx2.clearRect(0,0,w2,h2);
+  const maxCum = Math.max(eurShale, eurConv) * 1.05;
+
+  for (let i=0;i<=4;i++) {
+    const y = pad2.t + ch2 - (i/4)*ch2;
+    ctx2.beginPath(); ctx2.moveTo(pad2.l,y); ctx2.lineTo(pad2.l+cw2,y);
+    ctx2.strokeStyle=gridCol; ctx2.lineWidth=1; ctx2.stroke();
+    ctx2.fillStyle=textCol; ctx2.font='11px sans-serif'; ctx2.textAlign='right';
+    ctx2.fillText(Math.round((i/4)*maxCum/1000)+'k', pad2.l-6, y+4);
+  }
+  for (let m=0;m<=120;m+=12) {
+    const x = pad2.l + (m/months)*cw2;
+    ctx2.fillStyle=textCol; ctx2.font='11px sans-serif'; ctx2.textAlign='center';
+    ctx2.fillText('Yr '+(m/12), x, pad2.t+ch2+18);
+  }
+  ctx2.fillStyle=textCol; ctx2.font='11px sans-serif'; ctx2.textAlign='center';
+  ctx2.fillText('Cumulative production (boe) — shows EUR build-up', w2/2, h2-2);
+  ctx2.save(); ctx2.translate(14, h2/2); ctx2.rotate(-Math.PI/2);
+  ctx2.fillText('Cum. boe', 0, 0); ctx2.restore();
+
+  // Shale cum
+  ctx2.beginPath();
+  for (let m=0;m<=months;m++) {
+    const x = pad2.l + (m/months)*cw2;
+    const y = pad2.t + ch2 - (shaleCum[m]/maxCum)*ch2;
+    m===0 ? ctx2.moveTo(x,y) : ctx2.lineTo(x,y);
+  }
+  ctx2.strokeStyle='#E8593C'; ctx2.lineWidth=2; ctx2.setLineDash([]); ctx2.stroke();
+
+  // Conv cum
+  ctx2.beginPath();
+  for (let m=0;m<=months;m++) {
+    const x = pad2.l + (m/months)*cw2;
+    const y = pad2.t + ch2 - (convCum[m]/maxCum)*ch2;
+    m===0 ? ctx2.moveTo(x,y) : ctx2.lineTo(x,y);
+  }
+  ctx2.strokeStyle='#185FA5'; ctx2.lineWidth=2; ctx2.stroke();
+}
+
+['shaleIP','convIP'].forEach(id => {
+  document.getElementById(id).addEventListener('input', draw);
+});
+window.addEventListener('resize', draw);
+draw();
+</script>
+</body>
+</html>

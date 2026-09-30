@@ -1,0 +1,250 @@
+
+<!DOCTYPE html>
+<html><head><style>
+body { margin: 0; font-family: var(--font-sans, sans-serif); color: var(--color-text-primary, #1a1a18); }
+.eq-box { background: var(--color-background-secondary, #f5f3ec); border-radius: 10px; padding: 14px 20px; margin: 10px 0; }
+.eq { font-size: 17px; text-align: center; letter-spacing: 0.5px; color: var(--color-text-primary); margin: 6px 0; }
+.eq span.k { color: #185FA5; font-weight: 500; }
+.eq span.dp { color: #E8593C; font-weight: 500; }
+.eq span.mu { color: #1D9E75; font-weight: 500; }
+.eq span.a { color: #BA7517; font-weight: 500; }
+.eq span.l { color: #7F77DD; font-weight: 500; }
+.eq span.q { color: #2C2C2A; font-weight: 500; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 10px 0; }
+.param-card { background: var(--color-background-secondary); border-radius: 8px; padding: 10px 14px; }
+.param-card label { font-size: 12px; color: var(--color-text-secondary); display: block; margin-bottom: 4px; }
+.param-card input[type=range] { width: 100%; }
+.param-card .val { font-size: 15px; font-weight: 500; margin-top: 4px; }
+.result-box { border-radius: 10px; padding: 14px 20px; margin: 10px 0; text-align: center; }
+.result-num { font-size: 26px; font-weight: 500; }
+canvas { display: block; margin: 0 auto; }
+.legend-row { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; font-size: 11px; color: var(--color-text-secondary); margin: 4px 0; }
+.leg { display: flex; align-items: center; gap: 4px; }
+.leg-sw { width: 24px; height: 3px; border-radius: 2px; }
+.insight { background: var(--color-background-secondary); border-radius: 8px; padding: 10px 14px; margin: 8px 0; font-size: 12px; color: var(--color-text-secondary); line-height: 1.6; }
+</style></head>
+<body>
+
+<div class="eq-box">
+  <div style="font-size:12px;color:var(--color-text-secondary);text-align:center;margin-bottom:4px">Darcy's Law — linear flow form</div>
+  <div class="eq">
+    <span class="q">Q</span> = <span class="k">k</span> · <span class="a">A</span> · <span class="dp">ΔP</span> / (<span class="mu">μ</span> · <span class="l">L</span>)
+  </div>
+  <div style="display:flex;gap:18px;justify-content:center;flex-wrap:wrap;font-size:11px;margin-top:8px;color:var(--color-text-secondary)">
+    <span><span style="color:#2C2C2A;font-weight:500">Q</span> = flow rate (cc/s)</span>
+    <span><span style="color:#185FA5;font-weight:500">k</span> = permeability (darcy)</span>
+    <span><span style="color:#BA7517;font-weight:500">A</span> = cross-section area (cm²)</span>
+    <span><span style="color:#E8593C;font-weight:500">ΔP</span> = pressure drop (atm)</span>
+    <span><span style="color:#1D9E75;font-weight:500">μ</span> = viscosity (cp)</span>
+    <span><span style="color:#7F77DD;font-weight:500">L</span> = length (cm)</span>
+  </div>
+</div>
+
+<div class="grid2">
+  <div class="param-card">
+    <label>Permeability <span style="color:#185FA5;font-weight:500">k</span></label>
+    <input type="range" id="perm" min="0.001" max="1000" value="100" step="0.5" oninput="update()">
+    <div class="val" style="color:#185FA5" id="permVal">100 mD</div>
+  </div>
+  <div class="param-card">
+    <label>Pressure drop <span style="color:#E8593C;font-weight:500">ΔP</span></label>
+    <input type="range" id="dp" min="10" max="5000" value="1000" step="10" oninput="update()">
+    <div class="val" style="color:#E8593C" id="dpVal">1,000 psi</div>
+  </div>
+  <div class="param-card">
+    <label>Fluid viscosity <span style="color:#1D9E75;font-weight:500">μ</span> — oil type</label>
+    <input type="range" id="visc" min="0.3" max="1000" value="1" step="0.1" oninput="update()">
+    <div class="val" style="color:#1D9E75" id="viscVal">1.0 cp (light oil)</div>
+  </div>
+  <div class="param-card">
+    <label>Flow length <span style="color:#7F77DD;font-weight:500">L</span> — reservoir distance</label>
+    <input type="range" id="len" min="10" max="5000" value="500" step="10" oninput="update()">
+    <div class="val" style="color:#7F77DD" id="lenVal">500 ft</div>
+  </div>
+</div>
+
+<div class="result-box" id="resBox" style="background:#e6f1fb">
+  <div style="font-size:12px;color:#185FA5;margin-bottom:4px">Relative flow rate (normalized)</div>
+  <div class="result-num" id="resNum" style="color:#185FA5">—</div>
+  <div style="font-size:11px;color:var(--color-text-secondary);margin-top:4px" id="resNote"></div>
+</div>
+
+<canvas id="chart" height="200"></canvas>
+<div class="legend-row">
+  <div class="leg"><div class="leg-sw" style="background:#185FA5"></div>Permeability sweep</div>
+  <div class="leg"><div class="leg-sw" style="background:#E8593C"></div>Viscosity sweep</div>
+  <div class="leg"><div class="leg-sw" style="background:#1D9E75"></div>Pressure sweep</div>
+</div>
+
+<div style="margin: 10px 0; font-size: 12px; color: var(--color-text-secondary); text-align:center">Key viscosities for reference</div>
+<div class="grid2">
+  <div class="insight">
+    <strong style="color:var(--color-text-primary)">Fluid viscosity reference (cp)</strong><br>
+    Natural gas: 0.01–0.03 cp<br>
+    Light crude (40° API): 0.5–2 cp<br>
+    Medium crude (25° API): 5–50 cp<br>
+    Heavy crude (15° API): 100–10,000 cp<br>
+    Bitumen (oil sands): 100,000–1,000,000 cp<br>
+    Water: ~1 cp
+  </div>
+  <div class="insight">
+    <strong style="color:var(--color-text-primary)">What Darcy's Law tells us</strong><br>
+    Q ∝ k: double perm → double flow rate<br>
+    Q ∝ ΔP: double drawdown → double rate<br>
+    Q ∝ 1/μ: heavy oil flows 1,000× slower<br>
+    Q ∝ 1/L: longer reservoir → lower rate<br>
+    Q ∝ A: bigger wellbore contact → more flow<br>
+    Fracking creates A. Horizontal wells create L⁻¹.
+  </div>
+</div>
+
+<script>
+const dark = matchMedia('(prefers-color-scheme: dark)').matches;
+const textCol = dark ? '#c2c0b6' : '#3d3d3a';
+const gridCol = dark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.07)';
+
+function darcy(k_mD, dp_psi, mu_cp, L_ft) {
+  // Normalize to unit area. Q proportional.
+  // Convert: 1 mD = 9.869e-16 m², 1 psi = 6894.76 Pa, 1 cp = 1e-3 Pa·s, 1 ft = 0.3048 m
+  const k = k_mD * 9.869e-16;
+  const dp = dp_psi * 6894.76;
+  const mu = mu_cp * 1e-3;
+  const L = L_ft * 0.3048;
+  return (k * dp) / (mu * L); // m/s (velocity × area = flow rate per unit area)
+}
+
+function fmt(v) {
+  if (v >= 1e6) return (v/1e6).toFixed(2) + 'M×';
+  if (v >= 1e3) return (v/1e3).toFixed(1) + 'k×';
+  if (v >= 1) return v.toFixed(1) + '×';
+  return v.toFixed(3) + '×';
+}
+
+function viscLabel(v) {
+  if (v < 0.5) return v.toFixed(2) + ' cp (gas/condensate)';
+  if (v < 3) return v.toFixed(1) + ' cp (light oil)';
+  if (v < 20) return v.toFixed(0) + ' cp (medium oil)';
+  if (v < 200) return v.toFixed(0) + ' cp (heavy oil)';
+  return v.toFixed(0) + ' cp (bitumen-like)';
+}
+
+function update() {
+  const k = +document.getElementById('perm').value;
+  const dp = +document.getElementById('dp').value;
+  const mu = +document.getElementById('visc').value;
+  const L  = +document.getElementById('len').value;
+
+  document.getElementById('permVal').textContent = k >= 1 ? k.toFixed(0) + ' mD' : k.toFixed(3) + ' mD';
+  document.getElementById('dpVal').textContent = dp.toLocaleString() + ' psi';
+  document.getElementById('viscVal').textContent = viscLabel(mu);
+  document.getElementById('lenVal').textContent = L.toLocaleString() + ' ft';
+
+  const baseline = darcy(100, 1000, 1, 500);
+  const current  = darcy(k, dp, mu, L);
+  const ratio = current / baseline;
+
+  const rb = document.getElementById('resBox');
+  const rn = document.getElementById('resNum');
+  const rnote = document.getElementById('resNote');
+  rn.textContent = fmt(ratio) + ' baseline';
+  if (ratio > 50) { rb.style.background='#e1f5ee'; rn.style.color='#0F6E56'; rnote.textContent='Excellent flow conditions'; }
+  else if (ratio > 5) { rb.style.background='#e6f1fb'; rn.style.color='#185FA5'; rnote.textContent='Good deliverability'; }
+  else if (ratio > 0.5) { rb.style.background='#faeeda'; rn.style.color='#854F0B'; rnote.textContent='Moderate — may need stimulation'; }
+  else { rb.style.background='#fcebeb'; rn.style.color='#A32D2D'; rnote.textContent='Poor deliverability — fracking essential'; }
+
+  drawChart(k, dp, mu, L, baseline);
+}
+
+function drawChart(k_cur, dp_cur, mu_cur, L_cur, baseline) {
+  const c = document.getElementById('chart');
+  const W = (c.offsetWidth || 640) * devicePixelRatio;
+  const H = 260 * devicePixelRatio;
+  c.width = W; c.height = H;
+  c.style.height = '260px';
+  const ctx = c.getContext('2d');
+  ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+  const w = W/devicePixelRatio, h = H/devicePixelRatio;
+  ctx.clearRect(0,0,w,h);
+
+  const pad = {l:52, r:16, t:16, b:34};
+  const cw = w - pad.l - pad.r;
+  const ch = h - pad.t - pad.b;
+
+  // Fixed axes so all four sliders visibly move the curve.
+  // x: permeability, log 0.001 -> 1000 mD
+  // y: flow rate as ratio to baseline, log 1e-6 -> 1e5
+  const X0 = -3, X1 = 3, Y0 = -6, Y1 = 5;
+  const toX = p => pad.l + (Math.log10(p) - X0)/(X1 - X0) * cw;
+  const toY = r => {
+    const v = Math.max(Math.min(Math.log10(r), Y1), Y0);
+    return pad.t + ch - (v - Y0)/(Y1 - Y0) * ch;
+  };
+
+  // shale band
+  ctx.fillStyle = 'rgba(232,89,60,0.10)';
+  ctx.fillRect(pad.l, pad.t, toX(0.01) - pad.l, ch);
+  ctx.fillStyle = '#E8593C'; ctx.font = '10px sans-serif';
+  ctx.textAlign = 'left';
+  ctx.fillText('shale', pad.l + 4, pad.t + 13);
+
+  // gridlines
+  ctx.strokeStyle = gridCol; ctx.lineWidth = 1;
+  [0.001,0.01,0.1,1,10,100,1000].forEach(p => {
+    const x = toX(p);
+    ctx.beginPath(); ctx.moveTo(x, pad.t); ctx.lineTo(x, pad.t+ch); ctx.stroke();
+    ctx.fillStyle = textCol; ctx.font = '10px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(p >= 1000 ? '1k' : String(p), x, pad.t+ch+15);
+  });
+  for (let e = Y0; e <= Y1; e++) {
+    const y = toY(Math.pow(10,e));
+    ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(pad.l+cw, y); ctx.stroke();
+    ctx.fillStyle = textCol; ctx.font = '9px sans-serif';
+    ctx.textAlign = 'right';
+    ctx.fillText(e === 0 ? '1x' : '1e'+e, pad.l - 6, y + 3);
+  }
+
+  // baseline reference
+  const yb = toY(1);
+  ctx.beginPath(); ctx.setLineDash([4,3]);
+  ctx.moveTo(pad.l, yb); ctx.lineTo(pad.l+cw, yb);
+  ctx.strokeStyle = '#888780'; ctx.lineWidth = 1; ctx.stroke();
+  ctx.setLineDash([]);
+
+  // sweep curve at current dp / mu / L
+  const perms = [];
+  for (let i = 0; i <= 120; i++) perms.push(Math.pow(10, X0 + (X1-X0)*i/120));
+  ctx.beginPath();
+  perms.forEach((p,i) => {
+    const r = darcy(p, dp_cur, mu_cur, L_cur) / baseline;
+    const x = toX(p), y = toY(r);
+    i === 0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+  });
+  ctx.strokeStyle = '#185FA5'; ctx.lineWidth = 2.5; ctx.stroke();
+
+  // current point
+  const rCur = darcy(k_cur, dp_cur, mu_cur, L_cur) / baseline;
+  const cx = toX(k_cur), cy = toY(rCur);
+  ctx.beginPath(); ctx.arc(cx, cy, 6, 0, 2*Math.PI);
+  ctx.fillStyle = '#E8593C'; ctx.fill();
+  ctx.font = 'bold 11px sans-serif';
+  const right = cx < pad.l + cw * 0.7;
+  ctx.textAlign = right ? 'left' : 'right';
+  ctx.fillText('current', cx + (right ? 10 : -10), cy + 4);
+
+  // axis titles
+  ctx.fillStyle = textCol; ctx.font = '11px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('Permeability, mD (log)', pad.l + cw/2, h - 3);
+  ctx.save(); ctx.translate(12, pad.t + ch/2); ctx.rotate(-Math.PI/2);
+  ctx.fillText('Flow vs baseline (log)', 0, 0); ctx.restore();
+}
+
+['perm','dp','visc','len'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', update);
+});
+window.addEventListener('resize', update);
+update();
+</script>
+</body></html>

@@ -1,0 +1,5 @@
+config.py
+data/
+charts/
+__pycache__/
+.ipynb_checkpoints/

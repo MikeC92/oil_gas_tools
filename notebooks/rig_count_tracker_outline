@@ -1,0 +1,45 @@
+rig_count_tracker.ipynb
+Source  : Baker Hughes website (weekly Excel download)
+Release : Every Friday ~1:00pm ET
+Why     : Leading indicator for US production 6-9 months forward
+          Oil rigs drive crude output; gas rigs drive supply
+          Permian share tells you where growth is concentrated
+
+Cell 1 — Imports and configuration
+Standard imports plus openpyxl for Excel parsing and io for in-memory file handling. No API key needed. Key constants: Baker Hughes North America Excel URL, 
+the sheet names we expect to find, and a MANUAL_FALLBACK_PATH pointing to data/BH_rig_count_manual.xlsx — used if the auto-download fails. 
+Also imports yfinance for the WTI overlay.
+
+Cell 2 — Download Baker Hughes Excel workbook
+Attempts to download the BH North America rotary rig count Excel directly from their website using requests with browser-like headers. 
+Saves the raw bytes to data/BH_rig_count_latest.xlsx as a local cache. If the download fails (URL changed, server unreachable), 
+falls back to the manual file path with clear instructions. Prints all sheet names found so you can verify the workbook structure.
+
+Cell 3 — Parse US weekly rig count by type
+Parses the US sheet to extract the weekly time series of total, oil-directed, gas-directed, and miscellaneous rig counts. 
+The BH workbook has an unconventional wide-format layout — dates run across columns, rig categories run down rows — so parsing requires transposing and cleaning carefully. Prints the last 8 weeks as a sanity check.
+
+Cell 4 — Parse basin-level rig count
+Parses the US Basin sheet to extract weekly rig counts by major play — Permian, Eagle Ford, Marcellus/Utica, Haynesville, DJ/Niobrara, Williston/Bakken, and Anadarko/SCOOP-STACK. These are the seven basins that account for roughly 85% of US directed drilling activity. Maps BH's column names to clean display labels.
+
+Cell 5 — Fetch WTI price history for overlay
+Reuses the WTI price cache from Tools 2 and 4. Short cell — just loads the cache, filters to the relevant date range, and resamples to weekly for alignment with the weekly rig count data.
+
+Cell 6 — Merge and compute analytics
+Merges weekly rig count with weekly WTI price using merge_asof. Computes rolling 4-week and 52-week averages for total and oil rig counts. Calculates YoY changes. Adds a Permian share column (Permian rigs as % of total oil rigs) — this is the key concentration metric. Computes the lagged correlation between WTI price and oil rig count (WTI leads by approximately 16–26 weeks based on historical data).
+
+Cell 7 — Four-panel chart
+Four panels:
+
+Panel 1 (wide, top): Total rig count history from 2022 onward, stacked by oil/gas/misc, with WTI on a secondary y-axis. Annotates key events (COVID collapse, 2022 price spike, current level).
+Panel 2 (bottom-left): Oil-directed rig count with 4-week rolling average — the most watched single number.
+Panel 3 (bottom-right): Basin breakdown horizontal bar chart for the latest week, color-coded by commodity type.
+
+Cell 8 — Signal dashboard and plain English summary
+Prints: current total/oil/gas rig counts, WoW and YoY changes, 52-week range, Permian concentration, lagged WTI-rig correlation, production outlook signal (rising/stable/falling), and a plain English paragraph connecting rig count to forward production expectations. Cross-tool context from Tool 4 (current WTI price and backwardation signal — the two inputs that most directly drive rig count decisions).
+
+Cell 9 — Save data and wrap up
+Saves merged rig count and WTI dataset to CSV. Documents the BH URL maintenance procedure and the monthly code update workflow. Prints next release date (Friday) and the complete cross-tool refresh schedule for all six tools.
+
+
+Practical note on Baker Hughes URL maintenance. The BH website occasionally changes the direct download URL for their Excel files. The URL in Cell 1 is current as of April 2026 but may change. If the auto-download fails, the manual fallback is the safety net: download the file yourself from bakerhughes.com/rig-count, save it as BH_rig_count_manual.xlsx in your data/ folder, and the notebook will use it automatically. Update the URL as needed. Cell 2 prints clear instructions if the download fails.

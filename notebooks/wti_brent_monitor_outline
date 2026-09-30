@@ -1,0 +1,21 @@
+Here's the full plan before we write a single line:
+Data:
+
+WTI front-month futures via yfinance (ticker CL=F) — goes back to the 1980s
+Brent front-month futures via yfinance (ticker BZ=F) — goes back to the 1990s
+EIA weekly WTI spot price series as a cross-reference and quality check
+All three aligned to a common weekly frequency for clean comparison
+
+Charts — three panels:
+
+Panel 1: WTI and Brent price history on the same axis, with a 52-week high/low band, current price annotated
+Panel 2: WTI-Brent spread over time, with historical mean and ±1σ bands, current spread annotated
+Panel 3: Inventory signal (z-score from Tool 1) overlaid against WTI price — this is the analytically interesting one
+
+Signal dashboard:
+
+Current WTI and Brent prices
+Current spread and where it sits vs. history (percentile, z-score)
+1-week, 1-month, 3-month price change
+52-week high/low and current position within that range
+Plain English summary connecting inventory signal to current price level

@@ -1,0 +1,15 @@
+Cell 1 — Imports and configuration — load libraries, import API key, set constants
+
+Cell 2 — EIA API fetch function — a reusable function that talks to the EIA API cleanly, with error handling
+
+Cell 3 — Pull the data — fetch US crude stocks and Cushing stocks, 5 years of weekly data
+
+Cell 4 — Clean and structure the data — parse dates, sort, handle any gaps
+
+Cell 5 — Build the 5-year seasonal range — calculate historical min, max, average by week-of-year
+
+Cell 6 — Plot the main chart — current stocks vs. 5-year range, the Wednesday morning chart
+
+Cell 7 — Calculate the inventory signal — where are we vs. history in standard deviations and percentile terms
+
+Cell 8 — Plain English summary — a printed paragraph you could paste into a trading note

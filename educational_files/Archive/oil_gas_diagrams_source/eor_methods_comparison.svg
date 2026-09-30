@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="680" height="580" viewBox="0 0 680 580" xmlns="http://www.w3.org/2000/svg">
+<style>
+text{font-family:'IBM Plex Sans','Segoe UI',Arial,sans-serif}
+.th{font-size:13px;font-weight:600;fill:#1A1A18}
+.ts{font-size:11px;fill:#62615C}
+.node{stroke-width:.5}
+.arr{stroke:#5F5E5A;stroke-width:1;fill:none;opacity:.6}
+.leader{stroke:#5F5E5A;stroke-width:.5;opacity:.4}
+g.c-blue>rect,g.c-blue>circle,rect.c-blue,circle.c-blue{fill:#E6F1FB;stroke:#185FA5}
+g.c-blue>.th{fill:#0C447C} g.c-blue>.ts{fill:#185FA5}
+g.c-teal>rect,g.c-teal>circle,rect.c-teal,circle.c-teal{fill:#E1F5EE;stroke:#0F6E56}
+g.c-teal>.th{fill:#085041} g.c-teal>.ts{fill:#0F6E56}
+g.c-coral>rect,g.c-coral>circle,rect.c-coral,circle.c-coral{fill:#FAECE7;stroke:#D85A30}
+g.c-coral>.th{fill:#712B13} g.c-coral>.ts{fill:#993C1D}
+g.c-amber>rect,g.c-amber>circle,rect.c-amber,circle.c-amber{fill:#FAEEDA;stroke:#BA7517}
+g.c-amber>.th{fill:#633806} g.c-amber>.ts{fill:#854F0B}
+g.c-gray>rect,g.c-gray>circle,rect.c-gray,circle.c-gray{fill:#F1EFE8;stroke:#888780}
+g.c-gray>.th{fill:#2C2C2A} g.c-gray>.ts{fill:#5F5E5A}
+g.c-purple>rect,g.c-purple>circle,rect.c-purple,circle.c-purple{fill:#EEEDFB;stroke:#534AB7}
+g.c-purple>.th{fill:#3C3489} g.c-purple>.ts{fill:#534AB7}
+g.c-green>rect,g.c-green>circle,rect.c-green,circle.c-green{fill:#EDF5E5;stroke:#6a9a58}
+g.c-green>.th{fill:#27500A} g.c-green>.ts{fill:#3d6b2a}
+</style>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+<linearGradient id="res" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0%" stop-color="#b8a870"/>
+  <stop offset="100%" stop-color="#9e8e58"/>
+</linearGradient>
+</defs>
+
+<!-- Title -->
+<text class="th" x="340" y="24" text-anchor="middle" font-size="13">EOR methods — recovering what primary production leaves behind</text>
+
+<!-- Recovery factor bar -->
+<rect x="30" y="38" width="620" height="52" rx="8" fill="#F4F2EC" stroke="#D3D1C7" stroke-width="0.5"/>
+<text class="ts" x="340" y="56" text-anchor="middle" fill="#5F5E5A" font-size="11">Typical recovery factors by method (% of STOIIP recovered)</text>
+<!-- Bar segments -->
+<rect x="50" y="62" width="120" height="16" rx="2" fill="#BA7517" opacity="0.7"/>
+<text class="ts" x="110" y="74" text-anchor="middle" fill="#412402" font-size="9">Primary: 10–30%</text>
+<rect x="170" y="62" width="140" height="16" rx="2" fill="#185FA5" opacity="0.6"/>
+<text class="ts" x="240" y="74" text-anchor="middle" fill="#042C53" font-size="9">+ Secondary: up to 50%</text>
+<rect x="310" y="62" width="160" height="16" rx="2" fill="#1D9E75" opacity="0.6"/>
+<text class="ts" x="390" y="74" text-anchor="middle" fill="#04342C" font-size="9">+ EOR/Tertiary: up to 60–70%</text>
+<rect x="470" y="62" width="160" height="16" rx="2" fill="#888780" opacity="0.3"/>
+<text class="ts" x="550" y="74" text-anchor="middle" fill="#5F5E5A" font-size="9">Remaining in ground</text>
+
+<!-- Three EOR method panels -->
+
+<!-- Panel 1: Waterflood -->
+<g class="node c-blue" onclick="sendPrompt('Explain how waterflooding works in detail — injection patterns, sweep efficiency')">
+  <rect x="30" y="106" width="190" height="200" rx="10" stroke-width="0.5"/>
+  <text class="th" x="125" y="128" text-anchor="middle">Waterflood</text>
+  <text class="ts" x="125" y="144" text-anchor="middle">(Secondary recovery)</text>
+</g>
+
+<!-- Waterflood reservoir diagram inside panel -->
+<!-- Injector well -->
+<rect x="55" y="158" width="8" height="100" rx="2" fill="#5ba3cc" opacity="0.8"/>
+<text class="ts" x="59" y="154" text-anchor="middle" fill="#042C53" font-size="9">INJ</text>
+<!-- Producer well -->
+<rect x="175" y="158" width="8" height="100" rx="2" fill="#E8593C" opacity="0.8"/>
+<text class="ts" x="179" y="154" text-anchor="middle" fill="#A32D2D" font-size="9">PROD</text>
+<!-- Water front sweep -->
+<ellipse cx="100" cy="215" rx="42" ry="35" fill="#5ba3cc" opacity="0.35"/>
+<!-- Remaining oil -->
+<ellipse cx="155" cy="210" rx="25" ry="25" fill="#c08020" opacity="0.5"/>
+<!-- Water injection arrows -->
+<line x1="59" y1="200" x2="80" y2="205" class="arr" stroke="#185FA5" stroke-width="1.2" marker-end="url(#arrow)"/>
+<line x1="59" y1="220" x2="80" y2="218" class="arr" stroke="#185FA5" stroke-width="1.2" marker-end="url(#arrow)"/>
+<!-- Oil production arrow -->
+<line x1="155" y1="215" x2="175" y2="215" class="arr" stroke="#BA7517" stroke-width="1.2" marker-end="url(#arrow)"/>
+<text class="ts" x="125" y="272" text-anchor="middle" fill="#042C53" font-size="10">Water bank pushes</text>
+<text class="ts" x="125" y="286" text-anchor="middle" fill="#042C53" font-size="10">oil toward producers</text>
+<text class="ts" x="125" y="300" text-anchor="middle" fill="#5F5E5A" font-size="9">+10–20% RF over primary</text>
+
+<!-- Panel 2: CO2 miscible flood -->
+<g class="node c-teal" onclick="sendPrompt('How does CO2 miscible flooding work — what makes it miscible, and where is it used?')">
+  <rect x="245" y="106" width="190" height="200" rx="10" stroke-width="0.5"/>
+  <text class="th" x="340" y="128" text-anchor="middle">CO₂ miscible flood</text>
+  <text class="ts" x="340" y="144" text-anchor="middle">(Tertiary / EOR)</text>
+</g>
+
+<!-- CO2 flood diagram -->
+<rect x="265" y="158" width="8" height="100" rx="2" fill="#1D9E75" opacity="0.8"/>
+<text class="ts" x="269" y="154" text-anchor="middle" fill="#04342C" font-size="9">CO₂</text>
+<rect x="395" y="158" width="8" height="100" rx="2" fill="#E8593C" opacity="0.8"/>
+<text class="ts" x="399" y="154" text-anchor="middle" fill="#A32D2D" font-size="9">PROD</text>
+<!-- CO2 mixing zone -->
+<ellipse cx="315" cy="210" rx="45" ry="32" fill="#5DCAA5" opacity="0.4"/>
+<!-- Oil swelling / mobilization -->
+<ellipse cx="360" cy="212" rx="30" ry="22" fill="#c08020" opacity="0.45"/>
+<!-- Arrows -->
+<line x1="273" y1="198" x2="295" y2="205" class="arr" stroke="#1D9E75" stroke-width="1.2" marker-end="url(#arrow)"/>
+<line x1="273" y1="218" x2="295" y2="218" class="arr" stroke="#1D9E75" stroke-width="1.2" marker-end="url(#arrow)"/>
+<line x1="370" y1="212" x2="393" y2="212" class="arr" stroke="#BA7517" stroke-width="1.2" marker-end="url(#arrow)"/>
+<text class="ts" x="340" y="272" text-anchor="middle" fill="#085041" font-size="10">CO₂ dissolves into oil,</text>
+<text class="ts" x="340" y="286" text-anchor="middle" fill="#085041" font-size="10">swells it, lowers viscosity</text>
+<text class="ts" x="340" y="300" text-anchor="middle" fill="#5F5E5A" font-size="9">+8–15% RF · Permian Wolfcamp key user</text>
+
+<!-- Panel 3: Steamflood (SAGD) -->
+<g class="node c-coral" onclick="sendPrompt('Explain SAGD and steamflooding for heavy oil — how does it work in the Canadian oil sands?')">
+  <rect x="460" y="106" width="190" height="200" rx="10" stroke-width="0.5"/>
+  <text class="th" x="555" y="128" text-anchor="middle">SAGD / steamflood</text>
+  <text class="ts" x="555" y="144" text-anchor="middle">(Heavy oil / oil sands)</text>
+</g>
+
+<!-- SAGD diagram -->
+<!-- Steam injection well (upper) -->
+<rect x="485" y="164" width="130" height="8" rx="2" fill="#E8593C" opacity="0.7"/>
+<text class="ts" x="480" y="161" text-anchor="end" fill="#A32D2D" font-size="9">Steam →</text>
+<!-- Steam chamber -->
+<ellipse cx="550" cy="185" rx="50" ry="28" fill="#E8593C" opacity="0.2"/>
+<!-- Heavy oil drains down -->
+<line x1="530" y1="205" x2="530" y2="225" class="arr" stroke="#c08020" stroke-width="1.5" marker-end="url(#arrow)"/>
+<line x1="550" y1="205" x2="550" y2="225" class="arr" stroke="#c08020" stroke-width="1.5" marker-end="url(#arrow)"/>
+<line x1="570" y1="205" x2="570" y2="225" class="arr" stroke="#c08020" stroke-width="1.5" marker-end="url(#arrow)"/>
+<!-- Producer well (lower) -->
+<rect x="485" y="228" width="130" height="8" rx="2" fill="#BA7517" opacity="0.8"/>
+<text class="ts" x="480" y="242" text-anchor="end" fill="#633806" font-size="9">← Oil out</text>
+<text class="ts" x="555" y="268" text-anchor="middle" fill="#712B13" font-size="10">Steam heats bitumen,</text>
+<text class="ts" x="555" y="282" text-anchor="middle" fill="#712B13" font-size="10">gravity drains to producer</text>
+<text class="ts" x="555" y="300" text-anchor="middle" fill="#5F5E5A" font-size="9">Alberta oil sands — 170B bbl resource</text>
+
+<!-- Bottom: comparison table -->
+<rect x="30" y="322" width="620" height="230" rx="8" fill="none" stroke="#D3D1C7" stroke-width="0.5"/>
+<text class="th" x="340" y="343" text-anchor="middle" font-size="12">EOR method comparison</text>
+
+<!-- Headers -->
+<text class="th" x="100" y="362" text-anchor="middle" font-size="11">Method</text>
+<text class="th" x="230" y="362" text-anchor="middle" font-size="11">Mechanism</text>
+<text class="th" x="360" y="362" text-anchor="middle" font-size="11">Best reservoir type</text>
+<text class="th" x="480" y="362" text-anchor="middle" font-size="11">Incremental RF</text>
+<text class="th" x="590" y="362" text-anchor="middle" font-size="11">Key cost</text>
+<line x1="40" y1="366" x2="640" y2="366" stroke="#D3D1C7" stroke-width="0.5"/>
+
+<text class="ts" x="100" y="384" text-anchor="middle" fill="#185FA5" font-size="10">Waterflood</text>
+<text class="ts" x="230" y="384" text-anchor="middle" font-size="10">Pressure maintenance</text>
+<text class="ts" x="360" y="384" text-anchor="middle" font-size="10">Light-med oil, good perm</text>
+<text class="ts" x="480" y="384" text-anchor="middle" font-size="10">+10–20%</text>
+<text class="ts" x="590" y="384" text-anchor="middle" font-size="10">Water disposal</text>
+
+<text class="ts" x="100" y="406" text-anchor="middle" fill="#1D9E75" font-size="10">CO₂ flood</text>
+<text class="ts" x="230" y="406" text-anchor="middle" font-size="10">Miscibility, viscosity ↓</text>
+<text class="ts" x="360" y="406" text-anchor="middle" font-size="10">Light oil &gt;35° API</text>
+<text class="ts" x="480" y="406" text-anchor="middle" font-size="10">+8–15%</text>
+<text class="ts" x="590" y="406" text-anchor="middle" font-size="10">CO₂ supply + recycle</text>
+
+<text class="ts" x="100" y="428" text-anchor="middle" fill="#D85A30" font-size="10">SAGD / steam</text>
+<text class="ts" x="230" y="428" text-anchor="middle" font-size="10">Thermal — viscosity ↓↓</text>
+<text class="ts" x="360" y="428" text-anchor="middle" font-size="10">Heavy oil &lt;12° API</text>
+<text class="ts" x="480" y="428" text-anchor="middle" font-size="10">+40–60%</text>
+<text class="ts" x="590" y="428" text-anchor="middle" font-size="10">Steam generation</text>
+
+<text class="ts" x="100" y="450" text-anchor="middle" fill="#7F77DD" font-size="10">Polymer flood</text>
+<text class="ts" x="230" y="450" text-anchor="middle" font-size="10">Sweep efficiency ↑</text>
+<text class="ts" x="360" y="450" text-anchor="middle" font-size="10">Heterogeneous reservoirs</text>
+<text class="ts" x="480" y="450" text-anchor="middle" font-size="10">+5–12%</text>
+<text class="ts" x="590" y="450" text-anchor="middle" font-size="10">Polymer chemical cost</text>
+
+<text class="ts" x="100" y="472" text-anchor="middle" fill="#E24B4A" font-size="10">Surfactant / ASP</text>
+<text class="ts" x="230" y="472" text-anchor="middle" font-size="10">IFT reduction, wettability</text>
+<text class="ts" x="360" y="472" text-anchor="middle" font-size="10">High-IFT light oil</text>
+<text class="ts" x="480" y="472" text-anchor="middle" font-size="10">+5–15%</text>
+<text class="ts" x="590" y="472" text-anchor="middle" font-size="10">Chemical cost, high</text>
+
+<text class="ts" x="100" y="494" text-anchor="middle" fill="#BA7517" font-size="10">In-situ combustion</text>
+<text class="ts" x="230" y="494" text-anchor="middle" font-size="10">Burn fraction of oil</text>
+<text class="ts" x="360" y="494" text-anchor="middle" font-size="10">Heavy oil, deep reservoirs</text>
+<text class="ts" x="480" y="494" text-anchor="middle" font-size="10">+10–25%</text>
+<text class="ts" x="590" y="494" text-anchor="middle" font-size="10">Operational complexity</text>
+
+<text class="ts" x="340" y="540" text-anchor="middle" fill="#5F5E5A" font-size="10">RF = recovery factor (% of STOIIP). ASP = alkali-surfactant-polymer. IFT = interfacial tension.</text>
+</svg>

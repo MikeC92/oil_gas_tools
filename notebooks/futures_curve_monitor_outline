@@ -1,0 +1,45 @@
+Source  : yfinance (CME/NYMEX via Yahoo Finance)
+Markets : WTI crude oil (CL=F) + Henry Hub natural gas (NG=F)
+Refresh : Any time — prices update during market hours
+
+Contract Month Codes: https://www.cmegroup.com/month-codes.html
+January: F // February: G // March: H // April: J
+May: K // June: M // July: N // August: Q
+September: U // October: V // November: X // December: Z
+
+Cell 1 — Imports and configuration
+Standard imports plus yfinance. No EIA API key needed for this tool — it's entirely market data. 
+Configuration sets the lookback window for price history (2 years), the tickers for front-month continuous contracts, and the chart and data directories. 
+Also defines a SPREAD_WINDOW_DAYS constant (252 trading days) for the rolling statistics used in the spread analysis.
+
+Cell 2 — Fetch front-month price history with caching
+Reuses the fetch_price_with_cache() function from Tool 2. Downloads WTI and Henry Hub front-month continuous contract history back to a configurable start date, 
+caches to CSV, and on subsequent runs only fetches new days. This is the same cache-and-increment pattern you built in Tool 2 — worth retyping for self-containment. 
+Henry Hub (NG=F) is new relative to Tool 2 which only had WTI and Brent.
+
+Cell 3 — Calculate rolling statistics and curve shape proxy
+Here is where Tool 4 diverges from the simple price history in Tool 2. Because reliable monthly contract tickers (CLK25, NGM25 etc.) are inconsistent on yfinance, 
+we build a curve shape proxy using the M1-M2 roll spread — the difference between the front month and the second month contract. 
+This is the most actionable part of the term structure anyway: positive M1-M2 spread means backwardation (front month premium), negative means contango. 
+We also compute rolling 52-week highs and lows, 50-day and 200-day moving averages, and the roll yield.
+
+Cell 4 — Fetch M2 contract prices
+Pulls the second-month continuous contract for both WTI (CL=F rolls to next month automatically on yfinance, but we can use the 1=F offset tickers or a workaround) and 
+Henry Hub. This cell handles the yfinance quirk around continuous contract construction and documents the limitation clearly. 
+The M1-M2 spread is computed here and added to the combined DataFrame.
+
+Cell 5 — Three-panel price and curve chart
+Three panels stacked vertically:
+
+Panel 1: WTI 2-year price history with 50/200-day MA and 52-week high/low band
+Panel 2: Henry Hub 2-year price history with same overlays
+Panel 3: WTI M1-M2 roll spread with rolling mean and ±1 sigma bands — the contango/backwardation signal
+
+Cell 6 — Term structure signal dashboard
+Computes and prints: current M1 price, 52-week range and percentile, position vs 50/200-day MA, M1-M2 spread and its z-score, roll yield in %/month, 
+curve structure classification (steep contango / mild contango / flat / mild backwardation / steep backwardation), and a plain English interpretation connecting 
+the curve shape to storage and supply signals from Tool 3.
+
+Cell 7 — Save data and wrap up
+Saves the combined price and spread dataset to CSV. Prints next market close reminder and cross-tool workflow note: run Tool 3 Thursday morning for storage signal, 
+run Tool 4 any afternoon for price and curve context, connect the two signals manually using the plain English summaries.

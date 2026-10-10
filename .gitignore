@@ -3,3 +3,4 @@ data/
 charts/
 __pycache__/
 .ipynb_checkpoints/
+chart_style_demo.png

@@ -222,3 +222,85 @@ which is the same reason the commentary logs exist.
 
 **Leaning:** clear outputs, lean on the commentary logs for the record, and if the
 charts matter, commit the PNGs deliberately rather than as cell-output side effects.
+
+---
+
+## D15 — One chart style file, one hue per commodity
+
+**Decision:** all chart styling moves to `chart_style.py` at the project root. The
+palette becomes Okabe–Ito. Hue is assigned per commodity, project-wide, and line style
+carries the series kind.
+
+**Why a style file at all:** an inventory of the six notebooks found 99 inline
+`fontsize=` arguments across six different values, 49 `fontweight=` arguments, one
+`tight_layout()` call in fourteen plot cells, and `seaborn-v0_8-darkgrid` as the only
+shared decision. Every chart had been styled separately, by eye. Styling is
+configuration; what to plot is content; keeping them in the same cell meant the
+configuration question got re-answered — slightly differently — fourteen times.
+
+**Why the palette changed.** The old set was replaced partly on looks, but it also
+carried a measured defect. Run through a perceptual validator in OKLab with color
+vision deficiency simulation, on all pairs:
+
+| Check | Old | New |
+|---|---|---|
+| CVD separation | **FAIL — ΔE 3.2** | PASS — ΔE 11.0 |
+| Normal-vision separation | **FAIL — ΔE 10.7** | PASS — ΔE 16.4 |
+
+The failing pair was amber `#BA7517` against red-orange `#E8593C`. Under deuteranopia
+their perceptual distance was 3.2 against a target of 8 — effectively identical. On
+any chart carrying both, one series was invisible to roughly 6% of male readers. Even
+under full color vision the distance was below the legibility floor.
+
+**No hue family is banned.** Reds, purples and browns are all available to a future
+palette. The only hard requirement is that the set clears the validator. The current
+colors are the current answer, not a permanent one.
+
+**Why hue is per commodity and not per chart slot.** An earlier draft gave WTI `BLUE`
+and Brent `SKY` — two blues, on the theory that related commodities should read as
+related hues.
+
+That is wrong, and Michael caught it: *"suppose we wanted to now plot a rolling 50 day
+MA for WTI and Brent, what colors? Can't go to a related blue for association because
+they're both blue, so then any 50 day MA needs to be like green, which feels like the
+wrong data dimension to color on."*
+
+Exactly right. Subdividing a hue family to separate two commodities spends the hue
+channel on identity *twice*, leaving a derived series nowhere to go but a new hue —
+which would encode "is a moving average" as though it were a different product. One
+visual channel, two incompatible jobs.
+
+**What replaced it:** hue encodes commodity and nothing else, fixed across all six
+tools. Line style encodes what kind of series it is — `PRIMARY`, `DERIVED`,
+`PROJECTED`, `CONTEXT`. A 50-day average of WTI keeps WTI's blue and takes the dash.
+Five hues × four kinds yields twenty distinguishable lines with instant grouping.
+
+The general rule, which outlives this palette: **a visual channel encodes one data
+dimension.** Wanting a channel to carry a second dimension is the signal to reach for a
+different channel, not to subdivide the one already assigned.
+
+**Three rules the code now enforces rather than documents:**
+
+- `regime_span()` raises `ValueError` if either end is missing. An open-ended fill
+  starting at an event reads as a lopsided color jump. This extends D7 — which
+  replaced a shaded region with a line for the same reason — into something the code
+  won't let you do.
+- `seasonal_band()` requires a `series` name and builds its label from it. A legend
+  reading "5-yr range" on a two-line chart leaves the reader asking *range of what?*
+- `label_series()` reserves a right-hand margin and writes labels into it, de-colliding
+  in display pixels rather than data units. Callouts previously landed on top of the
+  lines, sometimes in a matching color, which made prices unreadable. Pixels, not data
+  units, because collisions happen in screen space — two lines 50¢ apart collide on a
+  $10 chart and don't on a $200 one.
+
+**Also found, deferred to the per-notebook pass:** `twinx()` appears twice and should
+go in both cases (a dual-axis chart lets the axis scaling manufacture an apparent
+correlation). Tool 3's six storage regions need small multiples — six lines on one
+axis is a form problem that no palette can fix.
+
+**Self-test:** `python chart_style.py` renders a demo exercising every helper. It has
+already caught two bugs during authoring — a crash passing a pandas `Timestamp` into
+matplotlib's affine transform, and collision-avoidance math that computed an
+adjustment it never applied.
+
+**Full rationale:** `docs/chart_style.md`.

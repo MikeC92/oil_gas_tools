@@ -94,6 +94,13 @@ DERIVED   = {"linestyle": "--", "linewidth": 1.6, "alpha": 0.90}
 PROJECTED = {"linestyle": ":",  "linewidth": 1.6, "alpha": 0.85}
 CONTEXT   = {"linestyle": "-",  "linewidth": 1.1, "alpha": 0.45}  # prior years
 
+# Diverging pair, for polarity around a reference (above/below zero).
+# Warm and cool poles with a neutral midpoint -- never a rainbow,
+# never a hue at the midpoint.
+DIVERGE_HIGH = BLUE
+DIVERGE_LOW  = VERMILLION
+DIVERGE_MID  = RULE
+
 # Status colors. Reserved -- never reused as a series color.
 GOOD     = "#1B7F4D"
 WARNING  = "#B25C00"
@@ -378,13 +385,14 @@ def thousands(suffix=""):
     return FuncFormatter(lambda v, _: f"{v:,.0f}{suffix}")
 
 
-def finish(fig, path=None, pad=1.1):
+def finish(fig, path=None, pad=1.1, tight=True):
     """Lay out and optionally save. Call this instead of plt.tight_layout().
 
     Keeps layout and save settings in one place so every chart in the repo
     is written the same way.
     """
-    fig.tight_layout(pad=pad)
+    if tight:
+       fig.tight_layout(pad=pad)
     if path is not None:
         fig.savefig(path)
     return fig

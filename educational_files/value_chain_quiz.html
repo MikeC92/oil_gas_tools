@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Value Chain Quiz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one column; sticky stream nav + score strip; questions grouped by stream, each plate keyed to the project's chart hue. */
+:root {
+  --bg: #F6F7F6;
+  --panel: #FFFFFF;
+  --ink: #1A1D21;
+  --muted: #5F656C;
+  --rule: #D8DBDF;
+  --up: #0072B2;
+  --mid: #009E73;
+  --down: #D55E00;
+  --good: #1B7F4D;
+  --bad: #B3261E;
+  --good-bg: #E6F3EC;
+  --bad-bg: #F8E7E5;
+  --chip: #EEF0F1;
+  --f-display: "Barlow Condensed", "Arial Narrow", sans-serif;
+  --f-body: "Atkinson Hyperlegible", system-ui, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #121417; --panel: #1A1D21; --ink: #E7E9EB; --muted: #9AA0A6; --rule: #2E3237;
+  --up: #56B4E9; --mid: #3CC59E; --down: #F08A4B; --good: #5FC28E; --bad: #F07A70;
+  --good-bg: #17301F; --bad-bg: #3A1D1B; --chip: #24282D; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #121417; --panel: #1A1D21; --ink: #E7E9EB; --muted: #9AA0A6; --rule: #2E3237;
+  --up: #56B4E9; --mid: #3CC59E; --down: #F08A4B; --good: #5FC28E; --bad: #F07A70;
+  --good-bg: #17301F; --bad-bg: #3A1D1B; --chip: #24282D; color-scheme: dark }
+
+body { background: var(--bg); color: var(--ink); font: 16px/1.55 var(--f-body); }
+.wrap { max-width: 740px; margin: 0 auto; padding-inline: 16px; padding-block: 32px 64px; display: grid; gap: 28px; }
+header { display: grid; gap: 8px; }
+.eyebrow { font: 600 12px/1 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h1 { font: 700 clamp(34px, 7vw, 48px)/1 var(--f-display); letter-spacing: .01em; margin: 0; text-wrap: balance; }
+.lede { color: var(--muted); margin: 0; max-width: 60ch; }
+
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid var(--rule); padding-block: 10px; display: grid; gap: 8px; }
+.nav { display: flex; gap: 6px; flex-wrap: wrap; }
+.nav a { font: 700 15px/1 var(--f-display); text-transform: uppercase; letter-spacing: .06em; text-decoration: none; color: var(--c); border: 1px solid var(--rule); border-radius: 999px; padding: 7px 12px; background: var(--panel); }
+.nav a[data-s="up"], .grp[data-s="up"], .q[data-s="up"] { --c: var(--up); }
+.nav a[data-s="mid"], .grp[data-s="mid"], .q[data-s="mid"] { --c: var(--mid); }
+.nav a[data-s="down"], .grp[data-s="down"], .q[data-s="down"] { --c: var(--down); }
+.score { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; font: 400 13px/1 var(--f-mono); color: var(--muted); }
+.pips { display: flex; gap: 3px; }
+.pipgrp { display: flex; gap: 3px; padding-right: 6px; }
+.pip { width: 16px; height: 6px; border-radius: 3px; background: var(--rule); }
+.pip.ok { background: var(--good); } .pip.no { background: var(--bad); }
+
+.grp { display: grid; gap: 18px; scroll-margin-top: 110px; }
+.grp h2 { font: 700 30px/1 var(--f-display); text-transform: uppercase; letter-spacing: .05em; color: var(--c); margin: 12px 0 0; display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.grp h2 small { font: 400 13px/1 var(--f-mono); color: var(--muted); text-transform: none; letter-spacing: 0; }
+
+.q { background: var(--panel); border: 1px solid var(--rule); border-top: 4px solid var(--c); border-radius: 6px; padding: 20px; display: grid; gap: 14px; }
+.qhead { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: baseline; }
+.qnum { font: 600 13px/1 var(--f-mono); color: var(--c); }
+.kind { font: 400 12px/1 var(--f-mono); color: var(--muted); }
+.prompt { margin: 0; font-size: 17px; }
+.given { font: 400 14px/1.7 var(--f-mono); background: var(--chip); border-radius: 4px; padding: 10px 12px; font-variant-numeric: tabular-nums; overflow-x: auto; white-space: pre; }
+
+.opts { display: grid; gap: 8px; }
+.opt { text-align: left; font: inherit; color: inherit; background: var(--panel); border: 1px solid var(--rule); border-radius: 4px; padding: 10px 12px; cursor: pointer; display: flex; gap: 10px; align-items: flex-start; }
+.opt:hover:not(:disabled) { border-color: var(--c); }
+.opt .k { font: 600 13px/1.6 var(--f-mono); color: var(--muted); flex: none; }
+.opt.sel { border-color: var(--c); box-shadow: inset 0 0 0 1px var(--c); }
+.opt .box { flex: none; width: 16px; height: 16px; margin-top: 3px; border: 1.5px solid var(--muted); border-radius: 3px; display: grid; place-items: center; font: 700 12px/1 var(--f-mono); }
+.opt.sel .box { background: var(--c); border-color: var(--c); color: var(--panel); }
+.opt.sel .box::after { content: "✓"; }
+.opt.right { background: var(--good-bg); border-color: var(--good); box-shadow: none; }
+.opt.wrong { background: var(--bad-bg); border-color: var(--bad); box-shadow: none; }
+.opt.missed { border-color: var(--good); border-style: dashed; }
+.opt:disabled { cursor: default; }
+
+.pool, .slots { display: flex; flex-wrap: wrap; gap: 8px; min-height: 44px; }
+.slots { border: 1px dashed var(--rule); border-radius: 4px; padding: 8px; counter-reset: s; }
+.chipbtn { font: 400 14px/1.2 var(--f-body); color: inherit; background: var(--chip); border: 1px solid var(--rule); border-radius: 999px; padding: 9px 12px; cursor: pointer; text-align: left; }
+.slots .chipbtn { counter-increment: s; background: var(--panel); border-color: var(--c); }
+.slots .chipbtn::before { content: counter(s) "  "; font-family: var(--f-mono); color: var(--muted); white-space: pre; }
+.chipbtn.right { border-color: var(--good); background: var(--good-bg); }
+.chipbtn.wrong { border-color: var(--bad); background: var(--bad-bg); }
+.hint { font-size: 13px; color: var(--muted); margin: 0; }
+
+.rows { display: grid; gap: 8px; }
+.row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 10px; align-items: center; padding: 8px 10px; border: 1px solid var(--rule); border-radius: 4px; }
+.row .l { font-weight: 700; min-width: 0; }
+.row.right { background: var(--good-bg); border-color: var(--good); }
+.row.wrong { background: var(--bad-bg); border-color: var(--bad); }
+.row .fix { grid-column: 1 / -1; font-size: 13px; color: var(--muted); }
+select { font: 400 14px/1.3 var(--f-body); color: var(--ink); background: var(--panel); border: 1px solid var(--rule); border-radius: 4px; padding: 8px; width: 100%; min-width: 0; }
+.seg { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.seg button { font: 400 13px/1 var(--f-body); color: inherit; background: var(--chip); border: 1px solid var(--rule); border-radius: 999px; padding: 8px 10px; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--c); border-color: var(--c); color: var(--panel); }
+.seg button:disabled { cursor: default; }
+@media (max-width: 520px) { .row { grid-template-columns: 1fr; } .seg { justify-content: flex-start; } }
+
+.numrow { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.numrow label { font: 400 14px/1 var(--f-mono); color: var(--muted); }
+input[type=number] { font: 600 18px/1 var(--f-mono); width: 8.5em; padding: 9px 10px; border: 1px solid var(--rule); border-radius: 4px; background: var(--panel); color: var(--ink); }
+
+.actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.btn { font: 700 15px/1 var(--f-body); padding: 10px 16px; border-radius: 4px; border: 1px solid var(--c); background: var(--c); color: var(--panel); cursor: pointer; }
+.btn.ghost { background: transparent; color: var(--ink); border-color: var(--rule); }
+.btn:disabled { opacity: .45; cursor: default; }
+button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible { outline: 2px solid var(--c, var(--up)); outline-offset: 2px; }
+
+.fb { border-left: 3px solid var(--good); padding: 4px 0 4px 14px; display: grid; gap: 6px; }
+.fb.no { border-color: var(--bad); }
+.fb.warn { border-color: var(--muted); }
+.fb strong { font-family: var(--f-display); font-size: 20px; letter-spacing: .03em; }
+.fb p { margin: 0; max-width: 64ch; }
+code { font: 400 .92em var(--f-mono); }
+.plate { font: 400 12px/1.4 var(--f-mono); color: var(--muted); }
+footer { color: var(--muted); font-size: 13px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+@media (prefers-reduced-motion: no-preference) { .fb { animation: in .25s ease-out; } @keyframes in { from { opacity: .3; transform: translateY(4px); } } html { scroll-behavior: smooth; } }
+</style>
+<style>body{margin:0}</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Layers 1–3 · 15 questions</span>
+    <h1>Value Chain Quiz</h1>
+    <p class="lede">Five questions per stream, in six formats: multiple choice, select-all, put in order, match, sort into buckets, and calculate. Every answer explains itself and points to the diagram plates.</p>
+  </header>
+
+  <div class="bar">
+    <nav class="nav"><a href="#upstream" data-s="up">Upstream</a><a href="#midstream" data-s="mid">Midstream</a><a href="#downstream" data-s="down">Downstream</a></nav>
+    <div class="score" aria-live="polite"><div class="pips" id="pips"></div><span id="scoreText">0 of 15 answered</span></div>
+  </div>
+
+  <div id="quiz"></div>
+
+  <footer><span>Answers aren't saved.</span><button class="btn ghost" id="resetAll">Start over</button></footer>
+</div>
+
+<script>
+const STREAMS = [
+  { id: "upstream", s: "up", name: "Upstream" },
+  { id: "midstream", s: "mid", name: "Midstream" },
+  { id: "downstream", s: "down", name: "Downstream" },
+];
+
+const Q = [
+/* ---------------- UPSTREAM ---------------- */
+{ s: "up", type: "mc",
+  prompt: "A horizontal well is producing steadily. Downhole conditions change so the oil's <b>viscosity doubles</b> while pressure drop, permeability, area and length stay the same. What happens to the flow rate?",
+  options: ["It doubles", "It halves", "It drops to a quarter", "It stays the same; viscosity only matters for gas wells"], answer: 1,
+  explain: "<p>Darcy's law: <code>q = k·A·ΔP / (μ·L)</code>. Viscosity <code>μ</code> sits in the denominator on its own, so the relationship is inverse and linear. Double μ and q halves. Nothing in the equation is squared, which is what the quarter option would need.</p><p>This is why heavy oil is hard to produce and why thermal EOR works: steam cuts viscosity by orders of magnitude.</p>",
+  plates: "darcys_law_interactive · eor_methods_comparison" },
+
+{ s: "up", type: "order",
+  prompt: "Put the life of a petroleum accumulation in geological order, from first to last.",
+  items: ["Organic-rich shale is deposited", "Burial heats it into the oil window", "Oil is expelled and migrates upward", "Migration stops beneath a seal in a trap", "Oil accumulates in the reservoir rock"],
+  shuffle: [3, 0, 4, 2, 1],
+  explain: "<p>Source, maturation, migration, trap, accumulation. Timing is the element people forget: the trap and seal must exist <i>before</i> migration happens, or the oil passes through and escapes at the surface. A perfect structure that formed after expulsion is a dry hole.</p>",
+  plates: "petroleum_system_cross_section" },
+
+{ s: "up", type: "calc",
+  prompt: "A shale well comes on at <b>1,000 bbl/d</b> and declines at a constant <b>60% per year</b> (effective annual decline). What is its rate at the end of year 2?",
+  given: "Initial rate       1,000 bbl/d\nEffective decline  60% / yr",
+  unit: "bbl/d", answer: 160, tol: 2,
+  traps: [[-200, "That subtracts 60% of the starting rate twice. Decline compounds: each year you keep 40% of the <i>previous</i> year's rate."], [400, "That's the rate after one year. Apply the decline a second time."]],
+  explain: "<p><code>1,000 × 0.40 = 400</code> after year 1<br><code>400 × 0.40 = <b>160 bbl/d</b></code> after year 2</p><p>A well losing 84% of its rate in two years is why shale is a treadmill: a basin's rig count has to keep running just to hold production flat. Real shale wells decline hyperbolically (steep, then flattening), so the constant-percentage version overstates late-life decline.</p>",
+  plates: "production_decline_curves · upstream_kpi_framework" },
+
+{ s: "up", type: "match",
+  prompt: "Match each recovery method to how it gets more oil out.",
+  pairs: [
+    ["Waterflood", "Maintains reservoir pressure and pushes oil toward producers"],
+    ["Steam flood", "Heats heavy oil to cut its viscosity"],
+    ["CO₂ miscible flood", "Dissolves into the oil, swelling it and removing capillary trapping"],
+    ["Polymer flood", "Thickens the injected water so it sweeps evenly instead of fingering"],
+  ],
+  explain: "<p>Waterflooding is secondary recovery; the other three are tertiary (EOR). Each EOR method attacks a different term: steam lowers oil viscosity μ, polymer raises the water's viscosity so the mobility ratio improves, and CO₂ removes the interfacial tension that leaves oil stuck in pore throats. The Permian is the world's largest CO₂-EOR province, fed by natural CO₂ from Colorado and New Mexico.</p>",
+  plates: "eor_methods_comparison · porosity_permeability_explainer" },
+
+{ s: "up", type: "multi",
+  prompt: "Holding the rock the same, which of these would typically <b>raise</b> a horizontal shale well's initial production? Select all that apply.",
+  options: ["A longer lateral", "More frac stages along the lateral", "More proppant per foot", "Higher-viscosity oil in place", "Wider spacing between stages, with fewer of them", "Landing the lateral in a tighter, lower-permeability layer"],
+  answer: [0, 1, 2],
+  explain: "<p>Longer laterals, more stages and heavier proppant loading all increase the fractured rock surface in contact with the wellbore, which is what drives IP in rock with nano-darcy permeability. Higher viscosity and lower permeability both cut flow directly through Darcy's law. Fewer, wider-spaced stages is the opposite of the industry trend of the last decade.</p>",
+  plates: "hydraulic_fracturing_explainer · drilling_anatomy" },
+
+/* ---------------- MIDSTREAM ---------------- */
+{ s: "mid", type: "order",
+  prompt: "Trace a molecule of wet gas from a Permian wellhead to an ethane cracker on the Gulf Coast. Tap the steps in the order the molecule meets them.",
+  items: ["Gathering line", "Field compression", "Processing plant (cryo)", "NGL pipeline to Mont Belvieu", "Fractionator", "Ethane cracker"],
+  shuffle: [4, 1, 5, 2, 0, 3],
+  explain: "<p>Compression comes before the plant because gathering lines run at low pressure and a cryogenic plant needs high inlet pressure. The plant splits residue gas (methane, to the interstate grid) from a mixed NGL stream called Y-grade. Y-grade travels as one stream to Mont Belvieu, and only the fractionator there separates ethane from propane, butanes and natural gasoline.</p>",
+  plates: "gathering_processing_flow · us_ngl_composition_2024 · petrochemical_feedstock_to_olefins" },
+
+{ s: "mid", type: "mc",
+  prompt: "On 20 April 2020 the May WTI contract settled at <b>−$37.63/bbl</b>. Which physical fact made a negative price possible?",
+  options: [
+    "OPEC+ had announced a production increase that week",
+    "The contract settles by physical delivery at Cushing, and Cushing storage was close to full",
+    "Brent fell further, and WTI is priced as a discount to Brent",
+    "Pipeline tariffs out of Cushing were raised above the price of crude",
+  ], answer: 1,
+  explain: "<p>NYMEX WTI is physically delivered at Cushing. Holders of the expiring contract who had no tank space had to sell at any price to avoid taking barrels they couldn't store, and with Cushing near its working capacity, buyers with space demanded to be paid. Brent is cash-settled and waterborne, so it never went negative. The lesson: a futures price is anchored to one physical location and its constraints.</p>",
+  plates: "cushing_hub_mechanics · midstream_overview_map" },
+
+{ s: "mid", type: "sort",
+  prompt: "Sort each midstream revenue stream by whether its earnings move with commodity prices.",
+  buckets: ["Fee-based", "Commodity-exposed"],
+  items: [
+    ["Interstate gas pipeline with firm reservation charges", 0],
+    ["Crude tank storage leased at a fixed monthly rate", 0],
+    ["Gas processing under a percent-of-proceeds contract", 1],
+    ["Gas processing under a keep-whole contract", 1],
+    ["Gathering system with a fixed $/Mcf fee on dedicated acreage", 0],
+    ["Marketing arm buying crude in Midland and selling in Houston", 1],
+  ],
+  explain: "<p>Reservation charges are paid whether or not the shipper flows gas, so they're the purest fee income. Fixed-fee gathering has no price exposure but does carry volume risk if the producer stops drilling. Percent-of-proceeds pays the processor a share of NGL sales, so it rises and falls with prices. Keep-whole is the most exposed: the processor owes the producer the heat value of the gas it removed, so it profits only when NGLs are worth more than gas. Marketing earns the Midland–Houston spread, which is a price.</p>",
+  plates: "midstream_business_model" },
+
+{ s: "mid", type: "calc",
+  prompt: "Work out the delivered cost of a US LNG cargo into Europe, in <b>$/MMBtu</b>. US contracts price feed gas at 115% of Henry Hub.",
+  given: "Henry Hub           $3.00 /MMBtu\nFeed gas formula    115% × HH\nLiquefaction fee    $2.50 /MMBtu\nShipping            $1.00 /MMBtu\nRegasification      $0.40 /MMBtu",
+  unit: "$/MMBtu", answer: 7.35, tol: 0.05,
+  traps: [[6.90, "That uses Henry Hub at 100%. The 15% uplift covers fuel burned to run the liquefaction trains."]],
+  explain: "<p><code>3.00 × 1.15 = 3.45</code> feed gas<br><code>3.45 + 2.50 + 1.00 + 0.40 = <b>$7.35/MMBtu</b></code></p><p>With TTF at $10, the arb is open by $2.65. The liquefaction fee is usually a fixed tolling charge paid whether or not the cargo lifts, so once it's sunk, a buyer will cancel a cargo only if TTF falls below the <i>variable</i> cost (about $4.85 here). That's the arbitrage Tool 5 watches.</p>",
+  plates: "lng_value_chain · tanker_freight_market" },
+
+{ s: "mid", type: "match",
+  prompt: "Match each tanker class to its rough cargo size and typical trade.",
+  pairs: [
+    ["VLCC", "~2 million bbl crude; Middle East Gulf to Asia"],
+    ["Suezmax", "~1 million bbl crude; the largest that transits Suez laden"],
+    ["Aframax", "~700,000 bbl crude; short-haul regional routes like the North Sea and US Gulf"],
+    ["MR (Medium Range)", "~300,000 bbl refined products; gasoline and diesel"],
+  ],
+  explain: "<p>Bigger ships cost less per barrel but fit fewer ports. VLCCs can't berth fully loaded at most US Gulf terminals, so they're loaded offshore by reverse lightering from Aframaxes, or at LOOP and the newer deepwater ports. MRs are the workhorses of product trade because product cargoes are smaller and go to more ports.</p>",
+  plates: "tanker_vessel_classes · tanker_freight_market" },
+
+/* ---------------- DOWNSTREAM ---------------- */
+{ s: "down", type: "calc",
+  prompt: "Work out the 3-2-1 crack spread in <b>$/bbl</b> from these settlements.",
+  given: "RBOB gasoline       $2.40 /gal\nULSD (heating oil)  $2.70 /gal\nWTI crude           $70.00 /bbl",
+  unit: "$/bbl", answer: 35, tol: 0.25,
+  traps: [[-67.5, "The products stayed in $/gal. Convert them to $/bbl at 42 gal/bbl before subtracting crude."], [105, "That's the weighted product value. Subtract the crude price to get the spread."]],
+  explain: "<p><code>RBOB 2.40 × 42 = $100.80/bbl</code><br><code>ULSD 2.70 × 42 = $113.40/bbl</code><br><code>(2 × 100.80 + 1 × 113.40) ÷ 3 = $105.00</code><br><code>105.00 − 70.00 = <b>$35.00/bbl</b></code></p><p>The 3-2-1 assumes 3 barrels of crude yield 2 of gasoline and 1 of distillate, roughly a Gulf Coast cracking refinery's product slate.</p>",
+  plates: "crack_spread_explainer · refining_margin_waterfall" },
+
+{ s: "down", type: "order",
+  prompt: "Order the cuts drawn off an atmospheric distillation column, from the <b>top</b> of the tower to the <b>bottom</b>.",
+  items: ["Refinery gas and LPG", "Naphtha", "Kerosene / jet", "Diesel (gas oil)", "Atmospheric residue"],
+  shuffle: [2, 4, 0, 3, 1],
+  explain: "<p>The tower is hottest at the bottom and coolest at the top, so cuts come off in order of boiling point: lightest and lowest-boiling at the top, heaviest at the bottom. Residue goes on to the vacuum tower, where lower pressure lets it boil without cracking, and then to conversion units like the coker.</p>",
+  plates: "crude_distillation_column" },
+
+{ s: "down", type: "match",
+  prompt: "Match each refinery unit to what it does.",
+  pairs: [
+    ["Fluid catalytic cracker (FCC)", "Cracks heavy gas oil over a catalyst, mainly into gasoline"],
+    ["Hydrocracker", "Cracks under hydrogen pressure, favouring diesel and jet"],
+    ["Catalytic reformer", "Raises naphtha's octane and produces hydrogen as a by-product"],
+    ["Delayed coker", "Thermally cracks residue into lighter liquids plus petroleum coke"],
+    ["Hydrotreater", "Removes sulfur to meet fuel specs"],
+  ],
+  explain: "<p>The reformer's hydrogen feeds the hydrotreaters and hydrocracker, which is one reason refineries are integrated systems rather than lists of units. An FCC-heavy refinery leans toward gasoline; a hydrocracker-heavy one leans toward diesel and jet, which matters for whether the 3-2-1 or a 2-1-1 spread better describes its margin.</p>",
+  plates: "refinery_process_flow" },
+
+{ s: "down", type: "mc",
+  prompt: "Refinery A has a Nelson Complexity Index of <b>4</b>. Refinery B has an NCI of <b>14</b>. Which statement is most accurate?",
+  options: [
+    "B can run heavier, sourer, cheaper crude and convert more of each barrel into light products",
+    "B has roughly 3.5 times A's crude throughput",
+    "A earns a higher margin on every barrel because it has fewer units to maintain",
+    "NCI only measures environmental compliance, so it says nothing about margins",
+  ], answer: 0,
+  explain: "<p>NCI weights each unit's capacity by its cost relative to the crude unit, so it measures conversion capability, not size. A complex refinery buys discounted heavy-sour crude and still makes gasoline and diesel, which is what a higher capture rate means. A simple refinery (a topping or hydroskimming plant) mostly separates what's in the barrel and is stuck with a lot of low-value residual fuel oil.</p>",
+  plates: "refining_margin_waterfall · refinery_process_flow" },
+
+{ s: "down", type: "multi",
+  prompt: "Which statements about ethane versus naphtha steam crackers are true? Select all that apply.",
+  options: [
+    "Ethane cracking yields a much higher share of ethylene",
+    "Naphtha cracking yields more propylene, butadiene and aromatics as co-products",
+    "The US ethane advantage comes from NGLs produced alongside shale gas",
+    "Ethylene has a triple carbon–carbon bond",
+    "Ethane crackers produce more butadiene than naphtha crackers",
+  ], answer: [0, 1, 2],
+  explain: "<p>Ethane cracks to roughly 80% ethylene; naphtha to about 30%, with a broad slate of co-products. Shale made US ethane cheap, so US crackers moved to ethane and gained a large cost edge over European and Asian naphtha crackers. The trade-off is that the US is short propylene and butadiene, which is why on-purpose propylene plants (PDH) were built. Ethylene's bond is double; ethane's is single.</p>",
+  plates: "petrochemical_feedstock_to_olefins · ethane_vs_ethylene_bonds" },
+];
+
+/* ---------- engine ---------- */
+const results = Q.map(() => null);
+const KIND = { mc: "multiple choice", multi: "select all that apply", order: "put in order", match: "match", sort: "sort into buckets", calc: "calculate" };
+const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
+function seededShuffle(arr, seed) { const a = arr.slice(); let s = seed + 7; for (let i = a.length - 1; i > 0; i--) { s = (s * 9301 + 49297) % 233280; const j = Math.floor(s / 233280 * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+
+function updateScore() {
+  Q.forEach((_, i) => { document.getElementById("pip" + i).className = "pip" + (results[i] === true ? " ok" : results[i] === false ? " no" : ""); });
+  const done = results.filter(r => r !== null).length, right = results.filter(r => r).length;
+  document.getElementById("scoreText").textContent = done < Q.length ? `${done} of ${Q.length} answered · ${right} correct` : `${right} of ${Q.length} correct`;
+  STREAMS.forEach(st => {
+    const idx = Q.map((q, i) => q.s === st.s ? i : -1).filter(i => i >= 0);
+    const r = idx.filter(i => results[i]).length, d = idx.filter(i => results[i] !== null).length;
+    document.getElementById("gs-" + st.s).textContent = d ? `${r} / ${idx.length}` : `${idx.length} questions`;
+  });
+}
+function finish(i, ok, card, extra) {
+  results[i] = ok; updateScore();
+  const q = Q[i], fb = card.querySelector(".fb");
+  fb.className = "fb" + (ok ? "" : " no");
+  fb.innerHTML = `<strong>${ok ? "Correct" : "Not quite"}</strong>${extra || ""}${q.explain}<span class="plate">Plates: ${q.plates}</span>`;
+  fb.hidden = false;
+}
+
+const R = {
+  mc(q, i, card, body) {
+    const opts = el("div", "opts"); body.appendChild(opts);
+    q.options.forEach((t, n) => {
+      const b = el("button", "opt", `<span class="k">${"ABCDEF"[n]}</span><span>${t}</span>`); b.id = `q${i}o${n}`;
+      b.onclick = () => {
+        opts.querySelectorAll(".opt").forEach((x, m) => { x.disabled = true; if (m === q.answer) x.classList.add("right"); });
+        if (n !== q.answer) b.classList.add("wrong");
+        finish(i, n === q.answer, card);
+      };
+      opts.appendChild(b);
+    });
+  },
+  multi(q, i, card, body) {
+    const opts = el("div", "opts"); body.appendChild(opts);
+    const sel = new Set();
+    q.options.forEach((t, n) => {
+      const b = el("button", "opt", `<span class="box"></span><span>${t}</span>`); b.id = `q${i}o${n}`; b.setAttribute("aria-pressed", "false");
+      b.onclick = () => { sel.has(n) ? sel.delete(n) : sel.add(n); b.classList.toggle("sel"); b.setAttribute("aria-pressed", sel.has(n)); chk.disabled = sel.size === 0; };
+      opts.appendChild(b);
+    });
+    const act = el("div", "actions"), chk = el("button", "btn", "Check"); chk.disabled = true; act.appendChild(chk); body.appendChild(act);
+    chk.onclick = () => {
+      chk.disabled = true;
+      const ans = new Set(q.answer); let ok = true;
+      opts.querySelectorAll(".opt").forEach((x, n) => {
+        x.disabled = true; x.classList.remove("sel");
+        if (ans.has(n) && sel.has(n)) x.classList.add("right");
+        else if (!ans.has(n) && sel.has(n)) { x.classList.add("wrong"); ok = false; }
+        else if (ans.has(n)) { x.classList.add("missed"); ok = false; }
+      });
+      finish(i, ok, card, ok ? "" : "<p>Dashed outlines are correct answers you didn't pick.</p>");
+    };
+  },
+  order(q, i, card, body) {
+    const pool = el("div", "pool"), slots = el("div", "slots"); slots.setAttribute("aria-label", "Your order");
+    body.append(pool, slots, el("p", "hint", "Tap a step to add it to your order; tap it again to send it back."));
+    const act = el("div", "actions"), chk = el("button", "btn", "Check order"); chk.disabled = true; act.appendChild(chk); body.appendChild(act);
+    let locked = false;
+    q.shuffle.map(k => q.items[k]).forEach(name => {
+      const c = el("button", "chipbtn"); c.textContent = name;
+      c.onclick = () => { if (locked) return; (c.parentElement === pool ? slots : pool).appendChild(c); chk.disabled = pool.children.length > 0; };
+      pool.appendChild(c);
+    });
+    chk.onclick = () => {
+      locked = true; chk.disabled = true; let ok = true;
+      [...slots.children].forEach((c, n) => { const r = c.textContent === q.items[n]; c.classList.add(r ? "right" : "wrong"); c.disabled = true; ok = ok && r; });
+      finish(i, ok, card, ok ? "" : `<p>Correct order: ${q.items.join(" → ")}.</p>`);
+    };
+  },
+  match(q, i, card, body) {
+    const rows = el("div", "rows"); body.appendChild(rows);
+    const rights = seededShuffle(q.pairs.map(p => p[1]), i);
+    const sels = q.pairs.map(([left], n) => {
+      const row = el("div", "row"), id = `q${i}m${n}`;
+      const lab = el("label", "l", left); lab.htmlFor = id;
+      const s = el("select"); s.id = id;
+      s.appendChild(new Option("Choose…", ""));
+      rights.forEach(r => s.appendChild(new Option(r, r)));
+      s.onchange = () => { chk.disabled = sels.some(x => !x.value); };
+      row.append(lab, s); rows.appendChild(row); return s;
+    });
+    const act = el("div", "actions"), chk = el("button", "btn", "Check matches"); chk.disabled = true; act.appendChild(chk); body.appendChild(act);
+    chk.onclick = () => {
+      chk.disabled = true; let ok = true;
+      sels.forEach((s, n) => {
+        const row = s.parentElement, r = s.value === q.pairs[n][1]; s.disabled = true;
+        row.classList.add(r ? "right" : "wrong"); ok = ok && r;
+        if (!r) row.appendChild(el("span", "fix", "Answer: " + q.pairs[n][1]));
+      });
+      finish(i, ok, card);
+    };
+  },
+  sort(q, i, card, body) {
+    const rows = el("div", "rows"); body.appendChild(rows);
+    const picks = q.items.map(() => null);
+    const segs = q.items.map(([text], n) => {
+      const row = el("div", "row"); row.appendChild(el("span", "l", text));
+      const seg = el("div", "seg"); seg.setAttribute("role", "group"); seg.setAttribute("aria-label", text);
+      q.buckets.forEach((b, k) => {
+        const btn = el("button", null, b); btn.setAttribute("aria-pressed", "false"); btn.id = `q${i}s${n}b${k}`;
+        btn.onclick = () => { picks[n] = k; seg.querySelectorAll("button").forEach((x, m) => x.setAttribute("aria-pressed", m === k)); chk.disabled = picks.some(p => p === null); };
+        seg.appendChild(btn);
+      });
+      row.appendChild(seg); rows.appendChild(row); return row;
+    });
+    const act = el("div", "actions"), chk = el("button", "btn", "Check sorting"); chk.disabled = true; act.appendChild(chk); body.appendChild(act);
+    chk.onclick = () => {
+      chk.disabled = true; let ok = true;
+      segs.forEach((row, n) => {
+        const r = picks[n] === q.items[n][1]; ok = ok && r;
+        row.classList.add(r ? "right" : "wrong"); row.querySelectorAll("button").forEach(b => b.disabled = true);
+        if (!r) row.appendChild(el("span", "fix", "Belongs in: " + q.buckets[q.items[n][1]]));
+      });
+      finish(i, ok, card);
+    };
+  },
+  calc(q, i, card, body) {
+    body.appendChild(el("div", "given", q.given));
+    const row = el("div", "numrow"), id = `q${i}n`;
+    const lab = el("label", null, q.unit); lab.htmlFor = id;
+    const inp = el("input"); inp.type = "number"; inp.step = "any"; inp.inputMode = "decimal"; inp.placeholder = "0"; inp.id = id;
+    row.append(inp, lab); body.appendChild(row);
+    const act = el("div", "actions"), chk = el("button", "btn", "Check answer"); act.appendChild(chk); body.appendChild(act);
+    const go = () => {
+      const v = parseFloat(inp.value), fb = card.querySelector(".fb");
+      if (isNaN(v)) { fb.className = "fb warn"; fb.innerHTML = `<p>Enter a number in ${q.unit} first.</p>`; fb.hidden = false; return; }
+      const ok = Math.abs(v - q.answer) <= q.tol;
+      let why = "";
+      if (!ok) (q.traps || []).forEach(([t, msg]) => { if (Math.abs(v - t) <= Math.max(q.tol * 2, 0.5)) why = `<p>${msg}</p>`; });
+      chk.disabled = true; inp.disabled = true;
+      finish(i, ok, card, why);
+    };
+    chk.onclick = go; inp.onkeydown = e => { if (e.key === "Enter") go(); };
+  },
+};
+
+function build() {
+  const root = document.getElementById("quiz"), pips = document.getElementById("pips");
+  root.innerHTML = ""; pips.innerHTML = ""; results.fill(null);
+  root.style.display = "grid"; root.style.gap = "36px";
+  let num = 0;
+  STREAMS.forEach(st => {
+    const grp = el("section", "grp"); grp.id = st.id; grp.dataset.s = st.s;
+    grp.appendChild(el("h2", null, `${st.name} <small id="gs-${st.s}"></small>`));
+    const pg = el("div", "pipgrp");
+    Q.forEach((q, i) => {
+      if (q.s !== st.s) return;
+      num++;
+      const p = el("span", "pip"); p.id = "pip" + i; pg.appendChild(p);
+      const card = el("article", "q"); card.dataset.s = q.s; card.id = "q" + i;
+      card.appendChild(el("div", "qhead", `<span class="qnum">Q${num}</span><span class="kind">${KIND[q.type]}</span>`));
+      card.appendChild(el("p", "prompt", q.prompt));
+      const body = el("div"); body.style.display = "grid"; body.style.gap = "12px"; card.appendChild(body);
+      R[q.type](q, i, card, body);
+      const fb = el("div", "fb"); fb.hidden = true; card.appendChild(fb);
+      grp.appendChild(card);
+    });
+    pips.appendChild(pg); root.appendChild(grp);
+  });
+  updateScore();
+}
+document.getElementById("resetAll").onclick = () => { build(); window.scrollTo(0, 0); };
+build();
+</script>
+
+</body>
+</html>
